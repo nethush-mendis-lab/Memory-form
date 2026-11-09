@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Book — Mom & Dad Memory Album</title>
+    <title>Story Book</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,24 +17,22 @@
             theme: {
                 extend: {
                     colors: {
-                        linen: {
+                        sand: {
                             50: '#FDFBF7',
-                            100: '#F8F5F0',
-                            200: '#EFEAE1',
-                            300: '#E2DACC',
-                            400: '#D1C4B0'
+                            100: '#FAFAFA',
+                            200: '#F4F4F5',
+                            300: '#E4E4E7',
+                            400: '#D4D4D8'
                         },
                         charcoal: {
-                            700: '#383431',
-                            800: '#272422',
-                            900: '#1F1D1B'
+                            700: '#3F3F46',
+                            800: '#27272A',
+                            900: '#18181B'
                         },
-                        sienna: {
-                            600: '#9E472A',
-                            700: '#833920',
-                            800: '#682C18'
-                        },
-                        taupe: '#78726A'
+                        amberAccent: {
+                            600: '#B45309',
+                            700: '#92400E'
+                        }
                     },
                     fontFamily: {
                         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
@@ -50,461 +45,353 @@
     
     <style>
         body {
-            background-color: #F8F5F0;
-            color: #1F1D1B;
+            background-color: #FAFAFA;
+            color: #18181B;
         }
 
-        /* Subtle linen paper texture overlay */
-        .paper-overlay {
-            background-color: #F8F5F0;
-            background-image: radial-gradient(#E2DACC 0.65px, transparent 0.65px);
-            background-size: 14px 14px;
+        .paper-bg {
+            background-color: #FAFAFA;
+            background-image: radial-gradient(#E4E4E7 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 7px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #F8F5F0;
+            background: #FAFAFA;
         }
         ::-webkit-scrollbar-thumb {
-            background: #D1C4B0;
+            background: #D4D4D8;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #9E472A;
+            background: #A1A1AA;
         }
 
-        /* Photo Frame Shadow & Border */
-        .editorial-frame {
+        .story-card {
             background: #FFFFFF;
-            border: 1px solid #E2DACC;
-            box-shadow: 0 4px 20px -2px rgba(31, 29, 27, 0.05), 0 2px 6px -1px rgba(31, 29, 27, 0.03);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid #E4E4E7;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .story-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4D4D8;
+            box-shadow: 0 16px 32px -8px rgba(24, 24, 27, 0.08);
         }
 
-        .editorial-frame:hover {
-            box-shadow: 0 12px 30px -4px rgba(31, 29, 27, 0.1), 0 4px 12px -2px rgba(31, 29, 27, 0.04);
-            transform: translateY(-3px);
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        /* Masonry Grid CSS Columns */
-        .masonry-grid {
-            column-count: 1;
-            column-gap: 1.75rem;
-        }
-        @media (min-width: 640px) {
-            .masonry-grid {
-                column-count: 2;
-            }
-        }
-        @media (min-width: 1024px) {
-            .masonry-grid {
-                column-count: 3;
-            }
-        }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1.75rem;
-        }
-
-        /* Fade-in Animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
 </head>
-<body class="paper-overlay font-sans min-h-screen flex flex-col selection:bg-sienna-600 selection:text-white">
+<body class="paper-bg font-sans min-h-screen flex flex-col antialiased selection:bg-charcoal-900 selection:text-white">
 
     <!-- ================= TOP NAVIGATION BAR ================= -->
-    <header class="border-b border-linen-300 bg-linen-100/95 sticky top-0 z-30 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header class="border-b border-sand-300 bg-white/90 sticky top-0 z-30 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             
-            <!-- Branding -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full border border-charcoal-900/20 flex items-center justify-center text-charcoal-900 bg-linen-50">
-                    <i class="fa-regular fa-bookmark text-sm"></i>
+                <div class="w-9 h-9 rounded-xl border border-sand-300 bg-sand-100 flex items-center justify-center text-charcoal-900 shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 3h12a1 1 0 0 1 1 1v13.5l-5-3-5 3V4a1 1 0 0 1 1-1z"/>
+                    </svg>
                 </div>
-                <div>
-                    <span class="font-serif text-2xl font-semibold tracking-tight text-charcoal-900 block leading-none">Story Book</span>
-                    <span class="text-[11px] text-taupe font-medium uppercase tracking-widest mt-1 block">Mom & Dad Archive</span>
-                </div>
+                <h1 class="font-serif text-2xl font-semibold text-charcoal-900 tracking-tight leading-none">Story Book</h1>
             </div>
 
-            <!-- Action Controls -->
-            <div class="flex items-center gap-3">
-                <button onclick="openAddModal()" class="px-4 py-2 bg-charcoal-900 hover:bg-sienna-600 text-linen-50 text-xs font-medium tracking-wide rounded-md transition-colors flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-plus text-[10px]"></i>
-                    <span>Add Memory</span>
-                </button>
-                
-                <div class="relative group">
-                    <button class="w-9 h-9 rounded-md border border-linen-300 bg-linen-50 hover:bg-linen-200 text-charcoal-800 flex items-center justify-center transition-colors text-xs" title="Album Options">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <div class="absolute right-0 mt-2 w-48 bg-white border border-linen-300 rounded-md shadow-lg py-1 hidden group-hover:block z-40">
-                        <button onclick="exportData()" class="w-full text-left px-4 py-2 text-xs text-charcoal-800 hover:bg-linen-100 flex items-center gap-2">
-                            <i class="fa-solid fa-download text-taupe"></i> Export Album (JSON)
-                        </button>
-                        <label class="w-full text-left px-4 py-2 text-xs text-charcoal-800 hover:bg-linen-100 cursor-pointer flex items-center gap-2">
-                            <i class="fa-solid fa-upload text-taupe"></i> Import Album
-                            <input type="file" id="import-file-input" onchange="importData(event)" accept=".json" class="hidden">
-                        </label>
-                        <div class="border-t border-linen-200 my-1"></div>
-                        <button onclick="resetDefaultMemories()" class="w-full text-left px-4 py-2 text-xs text-sienna-600 hover:bg-linen-100 flex items-center gap-2">
-                            <i class="fa-solid fa-rotate-left"></i> Reset Demo Photos
-                        </button>
-                    </div>
-                </div>
+            <div class="text-xs text-zinc-400 font-medium">
+                Photo Album
             </div>
 
         </div>
     </header>
 
-    <!-- ================= TOP HERO COVER SECTION ================= -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-12 w-full">
-        <div class="relative w-full rounded-xl overflow-hidden editorial-frame p-3 sm:p-4 bg-white">
-            
-            <!-- Cover Picture Frame -->
-            <div class="relative h-[340px] sm:h-[460px] md:h-[540px] w-full rounded-lg overflow-hidden bg-linen-200 group">
-                <img id="hero-cover-img" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80" 
-                     alt="Album Cover" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] transition-transform duration-700 group-hover:scale-105">
+    <!-- ================= HERO COVER SECTION ================= -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-6 w-full">
+        <div class="relative w-full rounded-3xl overflow-hidden border border-sand-300 bg-white p-3 sm:p-4 shadow-sm">
+            <div class="relative h-[280px] sm:h-[380px] md:h-[440px] w-full rounded-2xl overflow-hidden bg-sand-200">
                 
-                <!-- Dark Overlay for Readability -->
-                <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/85 via-charcoal-900/30 to-transparent"></div>
+                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80" 
+                     alt="Cover" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02]">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/75 via-charcoal-900/20 to-transparent"></div>
 
-                <!-- Cover Title Overlay -->
-                <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-12 text-linen-50 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div class="space-y-2 max-w-2xl">
-                        <div class="inline-block px-3 py-1 bg-white/15 backdrop-blur-md rounded-sm border border-white/20 text-linen-100 text-[11px] uppercase tracking-widest font-medium">
-                            Personal Memory Archive
-                        </div>
-                        <h1 id="hero-title" class="font-serif text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-white leading-none">
-                            Story Book
-                        </h1>
-                        <p id="hero-subtitle" class="font-serif italic text-lg sm:text-2xl text-linen-200 font-normal">
-                            Mom & Dad — Memory Album
-                        </p>
-                    </div>
-
-                    <!-- Customize Cover Button -->
-                    <button onclick="editCoverModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 text-white rounded-md text-xs font-medium transition-all self-start md:self-end">
-                        <i class="fa-solid fa-camera"></i>
-                        <span>Change Cover Photo</span>
-                    </button>
+                <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 text-white">
+                    <h2 class="font-serif text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-tight">
+                        Story Book
+                    </h2>
                 </div>
-            </div>
 
+            </div>
         </div>
     </section>
 
-    <!-- ================= MAIN ALBUM CONTENT ================= -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow space-y-8">
+    <!-- ================= MAIN CONTENT & CATEGORIES ================= -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full flex-grow space-y-8">
 
-        <!-- ALBUM FILTER BAR & COUNTER -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-linen-300 pb-5">
+        <!-- CATEGORY NAVIGATION BAR -->
+        <div class="flex items-center justify-between border-b border-sand-300 pb-5">
             
-            <!-- Era / Category Filter Pills -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="category-filters">
-                <button onclick="filterCategory('All')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-charcoal-900 bg-charcoal-900 text-linen-50" data-cat="All">
-                    All Memories
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="category-bar">
+                
+                <!-- ALL -->
+                <button onclick="filterCategory('All')" data-cat="All" class="cat-pill active px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all border border-zinc-900 bg-zinc-900 text-white shadow-sm shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="6" height="6" rx="1.5"/>
+                        <rect x="11" y="3" width="6" height="6" rx="1.5"/>
+                        <rect x="11" y="11" width="6" height="6" rx="1.5"/>
+                        <rect x="3" y="11" width="6" height="6" rx="1.5"/>
+                    </svg>
+                    <span>All</span>
                 </button>
-                <button onclick="filterCategory('Early Years')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Early Years">
-                    Early Years
+
+                <!-- EVERYDAY -->
+                <button onclick="filterCategory('Everyday')" data-cat="Everyday" class="cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6h10v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V6z"/>
+                        <path d="M14 8h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2"/>
+                        <path d="M6 2v2M10 2v2M14 2v2"/>
+                    </svg>
+                    <span>Everyday</span>
                 </button>
-                <button onclick="filterCategory('Family Trips')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Family Trips">
-                    Family Trips
+
+                <!-- JAPAN -->
+                <button onclick="filterCategory('Japan')" data-cat="Japan" class="cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 5h14M2 8h16M6 8v9M14 8v9M6 12h8"/>
+                    </svg>
+                    <span>Japan</span>
                 </button>
-                <button onclick="filterCategory('Everyday Moments')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Everyday Moments">
-                    Everyday Moments
+
+                <!-- CHILDHOOD -->
+                <button onclick="filterCategory('Childhood')" data-cat="Childhood" class="cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="14" height="14" rx="3"/>
+                        <path d="M7 14l3-7 3 7M8.2 11h3.6"/>
+                    </svg>
+                    <span>Childhood</span>
                 </button>
-                <button onclick="filterCategory('Celebrations')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Celebrations">
-                    Celebrations
+
+                <!-- FAMILY -->
+                <button onclick="filterCategory('Family')" data-cat="Family" class="cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="7" cy="6" r="2.5"/>
+                        <path d="M2 17v-1a3.5 3.5 0 0 1 3.5-3.5h3A3.5 3.5 0 0 1 12 16v1"/>
+                        <circle cx="14" cy="7" r="2"/>
+                        <path d="M11.5 17v-.5a2.5 2.5 0 0 1 2.5-2.5h1.5a2.5 2.5 0 0 1 2.5 2.5v.5"/>
+                    </svg>
+                    <span>Family</span>
                 </button>
+
+                <!-- SPECIAL MOMENTS -->
+                <button onclick="filterCategory('Special Moments')" data-cat="Special Moments" class="cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0">
+                    <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="10 2 12.5 7.5 18 8.2 14 12 15 17.5 10 14.8 5 17.5 6 12 2 8.2 7.5 10 2"/>
+                    </svg>
+                    <span>Special Moments</span>
+                </button>
+
             </div>
 
-            <!-- Item Counter -->
-            <div class="text-xs text-taupe font-medium self-end sm:self-center">
-                Showing <span id="memory-count" class="font-semibold text-charcoal-900">0</span> photos
+            <div class="text-xs text-zinc-500 font-medium shrink-0 hidden sm:block">
+                <span id="memory-count" class="font-semibold text-charcoal-900">0</span> memories
             </div>
+
         </div>
 
-        <!-- MASONRY GALLERY STREAM -->
-        <div class="masonry-grid" id="album-gallery">
-            <!-- Dynamically Rendered Memory Cards -->
-        </div>
-
-        <!-- EMPTY STATE (Shown if no items match filter) -->
-        <div id="empty-state" class="hidden text-center py-20 border border-dashed border-linen-300 rounded-xl bg-white/50 space-y-4">
-            <div class="w-12 h-12 rounded-full bg-linen-200 text-taupe flex items-center justify-center mx-auto text-xl">
-                <i class="fa-regular fa-image"></i>
-            </div>
-            <div class="space-y-1">
-                <h3 class="font-serif text-xl font-semibold text-charcoal-900">No memories found</h3>
-                <p class="text-xs text-taupe max-w-sm mx-auto">There are no photos in this category yet. Click "Add Memory" to upload a new moment.</p>
-            </div>
-            <button onclick="openAddModal()" class="px-4 py-2 bg-charcoal-900 text-white text-xs font-medium rounded-md hover:bg-sienna-600 transition-colors inline-flex items-center gap-2">
-                <i class="fa-solid fa-plus text-[10px]"></i> Add Photo
-            </button>
+        <!-- PHOTO GALLERY GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
+            <!-- Dynamic Photo Cards Render Here -->
         </div>
 
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="border-t border-linen-300 bg-linen-100 py-12 mt-20 text-charcoal-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div>
-                <h4 class="font-serif text-xl font-semibold text-charcoal-900">Story Book</h4>
-                <p class="text-xs text-taupe mt-1">A curated personal photo archive for Mom & Dad.</p>
-            </div>
-            <div class="text-xs text-taupe">
-                Handcrafted Family Memory Keepsake
-            </div>
+    <footer class="border-t border-sand-300 bg-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-zinc-400">
+            <div class="font-serif text-lg font-semibold text-charcoal-900">Story Book</div>
+            <div>Photo Album</div>
         </div>
     </footer>
 
-    <!-- ================= LIGHTBOX MODAL ================= -->
-    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8">
-        <div class="relative max-w-5xl w-full bg-white rounded-xl overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh]">
+    <!-- ================= FULLSCREEN LIGHTBOX MODAL ================= -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-charcoal-900/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
+        <div class="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
             
-            <!-- Close Button -->
-            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-charcoal-900/70 hover:bg-charcoal-900 text-white flex items-center justify-center text-sm transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-charcoal-900/60 hover:bg-charcoal-900 text-white flex items-center justify-center text-sm transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 5l10 10M15 5L5 15"/>
+                </svg>
             </button>
 
-            <!-- Lightbox Image Viewport -->
-            <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center overflow-hidden min-h-[300px] lg:min-h-[500px]">
-                <img id="lb-image" src="" alt="Enlarged memory" class="max-h-[80vh] w-auto max-w-full object-contain p-2">
+            <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center min-h-[300px] md:min-h-[480px]">
+                <img id="lb-image" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain p-2">
                 
-                <!-- Navigation Arrows -->
-                <button onclick="navigateLightbox(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                <button onclick="navigateLightbox(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.5 15L7.5 10l5-5"/>
+                    </svg>
                 </button>
-                <button onclick="navigateLightbox(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                <button onclick="navigateLightbox(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7.5 15l5-5-5-5"/>
+                    </svg>
                 </button>
             </div>
 
-            <!-- Lightbox Sidebar Details -->
-            <div class="w-full lg:w-96 p-6 sm:p-8 bg-linen-50 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-linen-300 overflow-y-auto">
+            <div class="w-full md:w-80 p-6 sm:p-8 bg-sand-50 flex flex-col justify-between border-t md:border-t-0 md:border-l border-sand-300 overflow-y-auto">
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between text-xs font-medium text-sienna-600">
-                        <span id="lb-date"><i class="fa-regular fa-calendar mr-1.5"></i> Year</span>
-                        <span id="lb-category" class="px-2.5 py-0.5 bg-linen-200 text-charcoal-800 rounded-full text-[11px]">Category</span>
+                    <div class="flex items-center justify-between text-xs text-amberAccent-600 font-semibold">
+                        <span id="lb-date"></span>
+                        <span id="lb-category-pill" class="px-2.5 py-1 bg-sand-200 text-charcoal-800 rounded-lg text-[11px] font-medium flex items-center gap-1.5"></span>
                     </div>
 
-                    <h3 id="lb-title" class="font-serif text-2xl sm:text-3xl font-semibold text-charcoal-900 leading-tight">
-                        Memory Title
-                    </h3>
+                    <h3 id="lb-title" class="font-serif text-2xl font-semibold text-charcoal-900 leading-tight"></h3>
 
-                    <div class="w-12 h-0.5 bg-sienna-600"></div>
+                    <div class="w-8 h-0.5 bg-amberAccent-600"></div>
 
-                    <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed whitespace-pre-line font-normal">
-                        Memory story description goes here...
-                    </p>
+                    <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal"></p>
                 </div>
 
-                <div class="pt-6 mt-6 border-t border-linen-300 flex items-center justify-between">
-                    <button onclick="quickEditCurrentLightbox()" class="text-xs text-charcoal-800 hover:text-sienna-600 font-medium flex items-center gap-1.5">
-                        <i class="fa-regular fa-pen-to-square"></i> Edit Entry
-                    </button>
-                    <button onclick="deleteCurrentLightbox()" class="text-xs text-red-600 hover:text-red-700 font-medium flex items-center gap-1.5">
-                        <i class="fa-regular fa-trash-can"></i> Remove
-                    </button>
+                <div class="pt-6 mt-6 border-t border-sand-300 text-xs text-zinc-400 flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 2a6 6 0 0 0-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 0 0-6-6z"/>
+                        <circle cx="10" cy="8" r="2"/>
+                    </svg>
+                    <span id="lb-location"></span>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- ================= ADD / EDIT MEMORY MODAL ================= -->
-    <div id="form-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-linen-300 space-y-6 max-h-[90vh] overflow-y-auto">
-            
-            <div class="flex items-center justify-between border-b border-linen-300 pb-4">
-                <h3 id="form-modal-title" class="font-serif text-2xl font-semibold text-charcoal-900">Add New Memory</h3>
-                <button onclick="closeFormModal()" class="text-taupe hover:text-charcoal-900 text-base">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <form id="memory-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                <input type="hidden" id="form-id">
-
-                <!-- Title Input -->
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Title / Caption *</label>
-                    <input type="text" id="form-title" required placeholder="e.g. Summer Vacation at the Lake" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
-                </div>
-
-                <!-- Date / Year & Category Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-charcoal-800 mb-1">Date or Year *</label>
-                        <input type="text" id="form-date" required placeholder="e.g. August 2004" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-charcoal-800 mb-1">Category *</label>
-                        <select id="form-category" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
-                            <option value="Early Years">Early Years</option>
-                            <option value="Family Trips">Family Trips</option>
-                            <option value="Everyday Moments">Everyday Moments</option>
-                            <option value="Celebrations">Celebrations</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Image Source Options -->
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Photo Source *</label>
-                    <div class="space-y-2">
-                        <input type="url" id="form-img-url" placeholder="Paste Photo Image Web URL (http://...)" oninput="handleUrlInput()" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
-                        <div class="text-[11px] text-center text-taupe font-medium my-1">— OR —</div>
-                        <input type="file" id="form-img-file" accept="image/*" onchange="handleFileInput(event)" class="w-full text-xs text-taupe file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-linen-200 file:text-charcoal-800 hover:file:bg-linen-300 cursor-pointer">
-                    </div>
-                </div>
-
-                <!-- Image Preview Box -->
-                <div id="img-preview-container" class="hidden relative h-40 w-full bg-linen-200 rounded-md overflow-hidden border border-linen-300">
-                    <img id="form-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
-                </div>
-
-                <!-- Description Input -->
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Story / Description</label>
-                    <textarea id="form-desc" rows="3" placeholder="Write a description or memory story attached to this photo..." class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50"></textarea>
-                </div>
-
-                <!-- Form Actions -->
-                <div class="pt-3 border-t border-linen-300 flex items-center justify-end gap-3">
-                    <button type="button" onclick="closeFormModal()" class="px-4 py-2 border border-linen-300 rounded-md text-xs font-medium text-charcoal-800 hover:bg-linen-100">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-5 py-2 bg-charcoal-900 hover:bg-sienna-600 text-white rounded-md text-xs font-medium shadow-sm transition-colors">
-                        Save Memory
-                    </button>
-                </div>
-            </form>
-
-        </div>
-    </div>
-
-    <!-- ================= EDIT COVER MODAL ================= -->
-    <div id="cover-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border border-linen-300 space-y-4">
-            <div class="flex items-center justify-between border-b border-linen-300 pb-3">
-                <h3 class="font-serif text-xl font-semibold text-charcoal-900">Customize Album Cover</h3>
-                <button onclick="closeCoverModal()" class="text-taupe hover:text-charcoal-900 text-sm">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Album Title</label>
-                    <input type="text" id="cover-title-input" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Subtitle</label>
-                    <input type="text" id="cover-subtitle-input" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Cover Image URL</label>
-                    <input type="url" id="cover-img-input" placeholder="http://..." class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
-                </div>
-            </div>
-            <div class="pt-3 border-t border-linen-300 flex justify-end gap-2">
-                <button onclick="closeCoverModal()" class="px-4 py-1.5 border border-linen-300 rounded-md text-xs font-medium text-charcoal-800">Cancel</button>
-                <button onclick="saveCoverDetails()" class="px-4 py-1.5 bg-charcoal-900 hover:bg-sienna-600 text-white rounded-md text-xs font-medium">Save Cover</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
-    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
-
-    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
     <script>
-        // Initial Default Memories Data
-        const DEFAULT_MEMORIES = [
+        const CATEGORY_ICONS = {
+            'Everyday': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V6z"/><path d="M14 8h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2"/><path d="M6 2v2M10 2v2M14 2v2"/></svg>`,
+            'Japan': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h14M2 8h16M6 8v9M14 8v9M6 12h8"/></svg>`,
+            'Childhood': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M7 14l3-7 3 7M8.2 11h3.6"/></svg>`,
+            'Family': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="6" r="2.5"/><path d="M2 17v-1a3.5 3.5 0 0 1 3.5-3.5h3A3.5 3.5 0 0 1 12 16v1"/><circle cx="14" cy="7" r="2"/><path d="M11.5 17v-.5a2.5 2.5 0 0 1 2.5-2.5h1.5a2.5 2.5 0 0 1 2.5 2.5v.5"/></svg>`,
+            'Special Moments': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 2 12.5 7.5 18 8.2 14 12 15 17.5 10 14.8 5 17.5 6 12 2 8.2 7.5 10 2"/></svg>`
+        };
+
+        const MEMORIES = [
             {
                 id: 'mem-1',
-                title: "Lake Tahoe Summer Trip",
-                date: "July 2004",
-                category: "Family Trips",
-                description: "Driving up the mountain pass with the trunk overflowing. Mom packed three coolers full of sandwiches, and Dad played old classic rock tapes all afternoon.",
-                imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80"
+                title: 'Kyoto Bamboo Path Stroll',
+                date: 'April 2019',
+                location: 'Kyoto, Japan',
+                category: 'Japan',
+                description: 'Walking through the quiet bamboo grove early in the morning before the crowds arrived. Sunlight filtered through the tall green stalks.',
+                imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80'
             },
             {
                 id: 'mem-2',
-                title: "Learning to Ride a Bike",
-                date: "May 1998",
-                category: "Early Years",
-                description: "Dad running right behind the little red bicycle down the driveway, letting go without telling me so I'd realize I was balancing all by myself.",
-                imageUrl: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=1000&q=80"
+                title: 'First Bike Without Training Wheels',
+                date: 'May 1999',
+                location: 'Oak Street Driveway',
+                category: 'Childhood',
+                description: 'Running right behind the little blue bicycle down the sidewalk, holding the seat until balancing came naturally on the open road.',
+                imageUrl: 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=1000&q=80'
             },
             {
                 id: 'mem-3',
-                title: "Sunday Coffee on the Porch",
-                date: "October 2012",
-                category: "Everyday Moments",
-                description: "The quiet morning routine before the rest of the house woke up. Crisp autumn morning, steaming mugs, and reading the newspaper together.",
-                imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80"
+                title: 'Sunday Morning Pancakes & Coffee',
+                date: 'October 2012',
+                location: 'Home Kitchen',
+                category: 'Everyday',
+                description: 'The warm weekend routine. Mixing pancake batter in the yellow bowl while fresh coffee brews on the kitchen counter.',
+                imageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80'
             },
             {
                 id: 'mem-4',
-                title: "Silver Wedding Anniversary",
-                date: "September 2018",
-                category: "Celebrations",
-                description: "Surprise dinner party at the old neighborhood Italian restaurant surrounded by family and lifelong friends celebrating 25 wonderful years.",
-                imageUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80"
+                title: 'Silver Wedding Anniversary Toast',
+                date: 'September 2018',
+                location: 'Napa Valley, California',
+                category: 'Special Moments',
+                description: 'Celebrating 25 wonderful years surrounded by lifelong friends and family at an outdoor vineyard table at sunset.',
+                imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80'
             },
             {
                 id: 'mem-5',
-                title: "First Winter Snowfall",
-                date: "December 2001",
-                category: "Everyday Moments",
-                description: "Mom making hot cinnamon cocoa while we attempted to build a massive snowman in the front garden right after the first big snowstorm.",
-                imageUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1000&q=80"
+                title: 'Summer Lake House Cabin',
+                date: 'July 2014',
+                location: 'Lake Tahoe, Nevada',
+                category: 'Family',
+                description: 'Two full weeks spent on the wooden dock swimming, reading, and taking evening boat trips around the quiet bay.',
+                imageUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80'
             },
             {
                 id: 'mem-6',
-                title: "Coastal Sunset Walk",
-                date: "August 2015",
-                tag: "Family Trips",
-                category: "Family Trips",
-                description: "Walking along the shoreline until the sun went completely below the horizon. The sound of waves and endless ocean air.",
-                imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+                title: 'Evening Lanterns in Asakusa',
+                date: 'April 2019',
+                location: 'Tokyo, Japan',
+                category: 'Japan',
+                description: 'Exploring the illuminated side streets of Tokyo after dinner. Warm red lanterns lit up every wooden storefront.',
+                imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                id: 'mem-7',
+                title: 'Building Forts in the Backyard',
+                date: 'June 2002',
+                location: 'Backyard Garden',
+                category: 'Childhood',
+                description: 'Spending summer afternoons constructing wooden tree forts and eating ice pops under the shade of the old oak tree.',
+                imageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                id: 'mem-8',
+                title: 'Rainy Afternoon Board Games',
+                date: 'November 2016',
+                location: 'Living Room',
+                category: 'Everyday',
+                description: 'A storm rolled in after lunch so we lit the fireplace, poured hot cinnamon tea, and played classic board games until dinner.',
+                imageUrl: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                id: 'mem-9',
+                title: 'University Graduation Ceremony',
+                date: 'June 2017',
+                location: 'University Campus Lawn',
+                category: 'Special Moments',
+                description: 'Standing proudly on the quad after the cap toss. A momentous milestone recorded on a crisp sunny day.',
+                imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1000&q=80'
+            },
+            {
+                id: 'mem-10',
+                title: 'Autumn Trail Hike',
+                date: 'October 2021',
+                location: 'Blue Ridge Mountains',
+                category: 'Family',
+                description: 'Hiking through golden aspen and maple trees on our annual autumn trip into the mountains.',
+                imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80'
             }
         ];
 
-        const DEFAULT_COVER = {
-            title: "Story Book",
-            subtitle: "Mom & Dad — Memory Album",
-            imageUrl: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80"
-        };
-
-        // Application State
-        let memories = [];
-        let coverData = { ...DEFAULT_COVER };
-        let activeCategory = 'All';
+        let currentCategory = 'All';
+        let filteredMemories = [...MEMORIES];
         let currentLightboxIndex = -1;
-        let currentFilteredMemories = [];
 
-        // DOM Loaded Initialization
         document.addEventListener('DOMContentLoaded', () => {
-            loadFromLocalStorage();
-            renderCover();
             renderGallery();
 
-            // Keyboard navigation for Lightbox
             document.addEventListener('keydown', (e) => {
-                const lbModal = document.getElementById('lightbox-modal');
-                if (!lbModal.classList.contains('hidden')) {
+                const lb = document.getElementById('lightbox');
+                if (!lb.classList.contains('hidden')) {
                     if (e.key === 'Escape') closeLightbox();
                     if (e.key === 'ArrowLeft') navigateLightbox(-1);
                     if (e.key === 'ArrowRight') navigateLightbox(1);
@@ -512,345 +399,105 @@
             });
         });
 
-        // Storage Management
-        function loadFromLocalStorage() {
-            const savedMemories = localStorage.getItem('storybook_memories');
-            if (savedMemories) {
-                try {
-                    memories = JSON.parse(savedMemories);
-                } catch(e) {
-                    memories = [...DEFAULT_MEMORIES];
+        function filterCategory(cat) {
+            currentCategory = cat;
+
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                const btnCat = btn.getAttribute('data-cat');
+                const svg = btn.querySelector('svg');
+                if (btnCat === cat) {
+                    btn.className = "cat-pill active px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all border border-zinc-900 bg-zinc-900 text-white shadow-sm shrink-0";
+                    if (svg) {
+                        svg.classList.remove('text-zinc-500');
+                        svg.classList.add('text-white');
+                    }
+                } else {
+                    btn.className = "cat-pill px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 shrink-0";
+                    if (svg) {
+                        svg.classList.remove('text-white');
+                        svg.classList.add('text-zinc-500');
+                    }
                 }
-            } else {
-                memories = [...DEFAULT_MEMORIES];
-                saveMemoriesToStorage();
-            }
+            });
 
-            const savedCover = localStorage.getItem('storybook_cover');
-            if (savedCover) {
-                try {
-                    coverData = JSON.parse(savedCover);
-                } catch(e) {
-                    coverData = { ...DEFAULT_COVER };
-                }
-            }
-        }
-
-        function saveMemoriesToStorage() {
-            localStorage.setItem('storybook_memories', JSON.stringify(memories));
-        }
-
-        function saveCoverToStorage() {
-            localStorage.setItem('storybook_cover', JSON.stringify(coverData));
-        }
-
-        // Render Functions
-        function renderCover() {
-            document.getElementById('hero-cover-img').src = coverData.imageUrl;
-            document.getElementById('hero-title').textContent = coverData.title;
-            document.getElementById('hero-subtitle').textContent = coverData.subtitle;
+            renderGallery();
         }
 
         function renderGallery() {
-            const gallery = document.getElementById('album-gallery');
-            const emptyState = document.getElementById('empty-state');
+            const grid = document.getElementById('gallery-grid');
 
-            // Filter logic
-            if (activeCategory === 'All') {
-                currentFilteredMemories = [...memories];
-            } else {
-                currentFilteredMemories = memories.filter(m => m.category === activeCategory);
-            }
+            filteredMemories = MEMORIES.filter(item => {
+                return (currentCategory === 'All') || (item.category === currentCategory);
+            });
 
-            document.getElementById('memory-count').textContent = currentFilteredMemories.length;
+            document.getElementById('memory-count').textContent = filteredMemories.length;
 
-            if (currentFilteredMemories.length === 0) {
-                gallery.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            // Render Masonry Cards
-            gallery.innerHTML = currentFilteredMemories.map((item, idx) => `
-                <div class="masonry-item">
-                    <article class="editorial-frame rounded-lg overflow-hidden group cursor-pointer animate-fade-in" onclick="openLightbox(${idx})">
-                        
-                        <!-- Image Box -->
-                        <div class="relative overflow-hidden bg-linen-200">
+            grid.innerHTML = filteredMemories.map((item, idx) => `
+                <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-fade-in flex flex-col justify-between" onclick="openLightbox(${idx})">
+                    
+                    <div>
+                        <div class="relative h-56 sm:h-60 w-full overflow-hidden bg-sand-200">
                             <img src="${item.imageUrl}" alt="${escapeHtml(item.title)}" 
-                                 class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
                             
-                            <div class="absolute top-3 right-3 px-2.5 py-1 bg-charcoal-900/80 backdrop-blur-sm text-linen-50 rounded text-[10px] uppercase font-medium tracking-wider">
-                                ${escapeHtml(item.category)}
+                            <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 border border-sand-300 rounded-lg text-[11px] font-semibold flex items-center gap-1.5 shadow-sm">
+                                ${CATEGORY_ICONS[item.category] || ''}
+                                <span>${escapeHtml(item.category)}</span>
                             </div>
                         </div>
 
-                        <!-- Content Details -->
-                        <div class="p-5 space-y-2">
-                            <div class="text-[11px] font-semibold text-sienna-600 tracking-wide uppercase">
-                                ${escapeHtml(item.date)}
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center justify-between text-xs font-semibold text-amberAccent-600">
+                                <span>${escapeHtml(item.date)}</span>
+                                <span class="text-zinc-400 font-normal flex items-center gap-1">
+                                    <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M10 2a6 6 0 0 0-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 0 0-6-6z"/>
+                                        <circle cx="10" cy="8" r="2"/>
+                                    </svg>
+                                    ${escapeHtml(item.location)}
+                                </span>
                             </div>
-                            <h3 class="font-serif text-xl font-semibold text-charcoal-900 group-hover:text-sienna-600 transition-colors leading-snug">
+
+                            <h3 class="font-serif text-2xl font-semibold text-charcoal-900 group-hover:text-amberAccent-600 transition-colors leading-snug">
                                 ${escapeHtml(item.title)}
                             </h3>
-                            ${item.description ? `
-                                <p class="text-xs text-charcoal-700 leading-relaxed line-clamp-3 font-normal">
-                                    ${escapeHtml(item.description)}
-                                </p>
-                            ` : ''}
-                        </div>
 
-                    </article>
-                </div>
+                            <p class="text-xs text-charcoal-700 leading-relaxed line-clamp-3 font-normal">
+                                ${escapeHtml(item.description)}
+                            </p>
+                        </div>
+                    </div>
+
+                </article>
             `).join('');
         }
 
-        // Category Filter Handling
-        function filterCategory(cat) {
-            activeCategory = cat;
-            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-cat') === cat) {
-                    btn.className = "cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-charcoal-900 bg-charcoal-900 text-linen-50";
-                } else {
-                    btn.className = "cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700";
-                }
-            });
-            renderGallery();
-        }
-
-        // Lightbox Logic
-        function openLightbox(filteredIdx) {
-            currentLightboxIndex = filteredIdx;
-            const item = currentFilteredMemories[filteredIdx];
+        function openLightbox(idx) {
+            currentLightboxIndex = idx;
+            const item = filteredMemories[idx];
             if (!item) return;
 
             document.getElementById('lb-image').src = item.imageUrl;
-            document.getElementById('lb-date').innerHTML = `<i class="fa-regular fa-calendar mr-1.5"></i> ${escapeHtml(item.date)}`;
-            document.getElementById('lb-category').textContent = item.category;
+            document.getElementById('lb-date').textContent = item.date;
+            document.getElementById('lb-category-pill').innerHTML = `${CATEGORY_ICONS[item.category] || ''} ${escapeHtml(item.category)}`;
             document.getElementById('lb-title').textContent = item.title;
-            document.getElementById('lb-description').textContent = item.description || 'No detailed description added for this photo memory.';
+            document.getElementById('lb-description').textContent = item.description;
+            document.getElementById('lb-location').textContent = item.location;
 
-            document.getElementById('lightbox-modal').classList.remove('hidden');
+            document.getElementById('lightbox').classList.remove('hidden');
         }
 
         function closeLightbox() {
-            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.getElementById('lightbox').classList.add('hidden');
         }
 
-        function navigateLightbox(direction) {
-            if (currentFilteredMemories.length === 0) return;
-            currentLightboxIndex += direction;
-            if (currentLightboxIndex < 0) currentLightboxIndex = currentFilteredMemories.length - 1;
-            if (currentLightboxIndex >= currentFilteredMemories.length) currentLightboxIndex = 0;
+        function navigateLightbox(dir) {
+            if (filteredMemories.length === 0) return;
+            currentLightboxIndex += dir;
+            if (currentLightboxIndex < 0) currentLightboxIndex = filteredMemories.length - 1;
+            if (currentLightboxIndex >= filteredMemories.length) currentLightboxIndex = 0;
             openLightbox(currentLightboxIndex);
-        }
-
-        function deleteCurrentLightbox() {
-            const item = currentFilteredMemories[currentLightboxIndex];
-            if (!item) return;
-            
-            memories = memories.filter(m => m.id !== item.id);
-            saveMemoriesToStorage();
-            closeLightbox();
-            renderGallery();
-            showToast("Photo memory removed.");
-        }
-
-        function quickEditCurrentLightbox() {
-            const item = currentFilteredMemories[currentLightboxIndex];
-            if (!item) return;
-            closeLightbox();
-            openFormModal(item);
-        }
-
-        // Add / Edit Modal Functions
-        function openAddModal() {
-            openFormModal(null);
-        }
-
-        function openFormModal(editItem = null) {
-            const form = document.getElementById('memory-form');
-            form.reset();
-            document.getElementById('img-preview-container').classList.add('hidden');
-
-            if (editItem) {
-                document.getElementById('form-modal-title').textContent = "Edit Photo Memory";
-                document.getElementById('form-id').value = editItem.id;
-                document.getElementById('form-title').value = editItem.title;
-                document.getElementById('form-date').value = editItem.date;
-                document.getElementById('form-category').value = editItem.category;
-                document.getElementById('form-img-url').value = editItem.imageUrl;
-                document.getElementById('form-desc').value = editItem.description || '';
-                
-                if (editItem.imageUrl) {
-                    showPreview(editItem.imageUrl);
-                }
-            } else {
-                document.getElementById('form-modal-title').textContent = "Add New Memory";
-                document.getElementById('form-id').value = '';
-            }
-
-            document.getElementById('form-modal').classList.remove('hidden');
-        }
-
-        function closeFormModal() {
-            document.getElementById('form-modal').classList.add('hidden');
-        }
-
-        function handleUrlInput() {
-            const url = document.getElementById('form-img-url').value;
-            if (url) {
-                showPreview(url);
-            } else {
-                document.getElementById('img-preview-container').classList.add('hidden');
-            }
-        }
-
-        function handleFileInput(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    const dataUrl = evt.target.result;
-                    document.getElementById('form-img-url').value = dataUrl;
-                    showPreview(dataUrl);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function showPreview(url) {
-            const container = document.getElementById('img-preview-container');
-            const img = document.getElementById('form-img-preview');
-            img.src = url;
-            container.classList.remove('hidden');
-        }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const id = document.getElementById('form-id').value;
-            const title = document.getElementById('form-title').value;
-            const date = document.getElementById('form-date').value;
-            const category = document.getElementById('form-category').value;
-            const imageUrl = document.getElementById('form-img-url').value || 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1000&q=80';
-            const description = document.getElementById('form-desc').value;
-
-            if (id) {
-                // Update existing
-                const idx = memories.findIndex(m => m.id === id);
-                if (idx !== -1) {
-                    memories[idx] = { id, title, date, category, imageUrl, description };
-                }
-                showToast("Memory updated!");
-            } else {
-                // Add new
-                const newMemory = {
-                    id: 'mem-' + Date.now(),
-                    title,
-                    date,
-                    category,
-                    imageUrl,
-                    description
-                };
-                memories.unshift(newMemory);
-                showToast("New memory added to Story Book!");
-            }
-
-            saveMemoriesToStorage();
-            closeFormModal();
-            renderGallery();
-        }
-
-        // Cover Edit Modal Functions
-        function editCoverModal() {
-            document.getElementById('cover-title-input').value = coverData.title;
-            document.getElementById('cover-subtitle-input').value = coverData.subtitle;
-            document.getElementById('cover-img-input').value = coverData.imageUrl;
-            document.getElementById('cover-modal').classList.remove('hidden');
-        }
-
-        function closeCoverModal() {
-            document.getElementById('cover-modal').classList.add('hidden');
-        }
-
-        function saveCoverDetails() {
-            const t = document.getElementById('cover-title-input').value;
-            const s = document.getElementById('cover-subtitle-input').value;
-            const i = document.getElementById('cover-img-input').value;
-
-            if (t) coverData.title = t;
-            if (s) coverData.subtitle = s;
-            if (i) coverData.imageUrl = i;
-
-            saveCoverToStorage();
-            renderCover();
-            closeCoverModal();
-            showToast("Cover photo customized!");
-        }
-
-        // Import & Export JSON Backup
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ cover: coverData, memories: memories }, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `Story_Book_Backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast("Album backup downloaded!");
-        }
-
-        function importData(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const imported = JSON.parse(evt.target.result);
-                    if (imported.memories && Array.isArray(imported.memories)) {
-                        memories = imported.memories;
-                        if (imported.cover) coverData = imported.cover;
-                        saveMemoriesToStorage();
-                        saveCoverToStorage();
-                        renderCover();
-                        renderGallery();
-                        showToast("Album successfully restored!");
-                    } else {
-                        showToast("Invalid JSON album format.");
-                    }
-                } catch(err) {
-                    showToast("Error reading JSON file.");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function resetDefaultMemories() {
-            memories = [...DEFAULT_MEMORIES];
-            coverData = { ...DEFAULT_COVER };
-            saveMemoriesToStorage();
-            saveCoverToStorage();
-            renderCover();
-            renderGallery();
-            showToast("Demo photo album restored.");
-        }
-
-        // Utility: Toast Notification
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = "px-4 py-2.5 bg-charcoal-900 text-linen-50 text-xs font-medium rounded-md shadow-lg border border-charcoal-700 animate-fade-in flex items-center gap-2";
-            toast.innerHTML = `<i class="fa-solid fa-check text-sienna-600"></i> ${escapeHtml(message)}`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
         }
 
         function escapeHtml(str) {

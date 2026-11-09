@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story Book — Growing Up With You</title>
+    <title>Story Book — Mom & Dad Memory Album</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,33 +20,28 @@
             theme: {
                 extend: {
                     colors: {
-                        parchment: {
-                            50: '#FAF7F0',
-                            100: '#F5EFE6',
-                            200: '#E8DFD1',
-                            300: '#D4C5B0',
-                            400: '#BFA88F'
+                        linen: {
+                            50: '#FDFBF7',
+                            100: '#F8F5F0',
+                            200: '#EFEAE1',
+                            300: '#E2DACC',
+                            400: '#D1C4B0'
                         },
-                        amberGold: {
-                            400: '#E5B842',
-                            500: '#D4A325',
-                            600: '#B58518',
-                            700: '#8A620E'
+                        charcoal: {
+                            700: '#383431',
+                            800: '#272422',
+                            900: '#1F1D1B'
                         },
-                        warmNavy: {
-                            700: '#2D3A45',
-                            800: '#1F2A33',
-                            900: '#141C24'
+                        sienna: {
+                            600: '#9E472A',
+                            700: '#833920',
+                            800: '#682C18'
                         },
-                        terracotta: {
-                            500: '#C86D51',
-                            600: '#B05439'
-                        }
+                        taupe: '#78726A'
                     },
                     fontFamily: {
-                        serif: ['Playfair Display', 'Georgia', 'serif'],
-                        cursive: ['Alex Brush', 'cursive', 'serif'],
-                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
                     }
                 }
             }
@@ -54,559 +49,812 @@
     </script>
     
     <style>
+        body {
+            background-color: #F8F5F0;
+            color: #1F1D1B;
+        }
+
+        /* Subtle linen paper texture overlay */
+        .paper-overlay {
+            background-color: #F8F5F0;
+            background-image: radial-gradient(#E2DACC 0.65px, transparent 0.65px);
+            background-size: 14px 14px;
+        }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 7px;
         }
         ::-webkit-scrollbar-track {
-            background: #F5EFE6;
+            background: #F8F5F0;
         }
         ::-webkit-scrollbar-thumb {
-            background: #D4C5B0;
-            border-radius: 4px;
+            background: #D1C4B0;
+            border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #BFA88F;
-        }
-        
-        .hero-banner {
-            background-image: linear-gradient(to bottom, rgba(20, 28, 36, 0.4), rgba(20, 28, 36, 0.85)), url('https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80');
-            background-size: cover;
-            background-position: center;
+            background: #9E472A;
         }
 
-        .paper-texture {
-            background-color: #FAF7F0;
-            background-image: radial-gradient(#E8DFD1 0.75px, transparent 0.75px);
-            background-size: 16px 16px;
+        /* Photo Frame Shadow & Border */
+        .editorial-frame {
+            background: #FFFFFF;
+            border: 1px solid #E2DACC;
+            box-shadow: 0 4px 20px -2px rgba(31, 29, 27, 0.05), 0 2px 6px -1px rgba(31, 29, 27, 0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .polaroid-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15), 0 8px 10px -6px rgba(0,0,0,0.1);
+        .editorial-frame:hover {
+            box-shadow: 0 12px 30px -4px rgba(31, 29, 27, 0.1), 0 4px 12px -2px rgba(31, 29, 27, 0.04);
+            transform: translateY(-3px);
         }
 
-        @media print {
-            body * {
-                visibility: hidden;
+        /* Masonry Grid CSS Columns */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.75rem;
+        }
+        @media (min-width: 640px) {
+            .masonry-grid {
+                column-count: 2;
             }
-            #printable-album, #printable-album * {
-                visibility: visible;
+        }
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                column-count: 3;
             }
-            #printable-album {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.75rem;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
         }
     </style>
 </head>
-<body class="paper-texture text-warmNavy-800 font-sans antialiased min-h-screen flex flex-col selection:bg-amberGold-400 selection:text-warmNavy-900">
+<body class="paper-overlay font-sans min-h-screen flex flex-col selection:bg-sienna-600 selection:text-white">
 
-    <!-- ================= NAVBAR ================= -->
-    <header class="sticky top-0 z-40 bg-parchment-100/90 backdrop-blur-md border-b border-parchment-300 shadow-sm">
+    <!-- ================= TOP NAVIGATION BAR ================= -->
+    <header class="border-b border-linen-300 bg-linen-100/95 sticky top-0 z-30 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <a href="#" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-amberGold-500 flex items-center justify-center text-white shadow-md">
-                    <i class="fa-solid fa-book-open text-lg"></i>
+            <!-- Branding -->
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full border border-charcoal-900/20 flex items-center justify-center text-charcoal-900 bg-linen-50">
+                    <i class="fa-regular fa-bookmark text-sm"></i>
                 </div>
                 <div>
-                    <span class="font-serif text-2xl font-bold tracking-tight text-warmNavy-900">Our Story Book</span>
-                    <span class="block text-[11px] text-amberGold-700 font-semibold tracking-widest uppercase">Gift for Mom & Dad</span>
+                    <span class="font-serif text-2xl font-semibold tracking-tight text-charcoal-900 block leading-none">Story Book</span>
+                    <span class="text-[11px] text-taupe font-medium uppercase tracking-widest mt-1 block">Mom & Dad Archive</span>
                 </div>
-            </a>
+            </div>
 
-            <!-- Nav Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-warmNavy-800">
-                <a href="#hero" class="hover:text-amberGold-600 transition-colors">Cover</a>
-                <a href="#letter" class="hover:text-amberGold-600 transition-colors">Letter</a>
-                <a href="#flip-book" class="hover:text-amberGold-600 transition-colors">Interactive Pages</a>
-                <a href="#gallery" class="hover:text-amberGold-600 transition-colors">Photo Gallery</a>
-            </nav>
-
-            <!-- Actions -->
+            <!-- Action Controls -->
             <div class="flex items-center gap-3">
-                <!-- Ambient Audio Button -->
-                <button id="audio-toggle" onclick="toggleAudio()" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold bg-parchment-200 hover:bg-parchment-300 rounded-xl transition-all border border-parchment-300">
-                    <i id="audio-icon" class="fa-solid fa-music text-amberGold-600"></i>
-                    <span id="audio-label">Play Music</span>
+                <button onclick="openAddModal()" class="px-4 py-2 bg-charcoal-900 hover:bg-sienna-600 text-linen-50 text-xs font-medium tracking-wide rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-plus text-[10px]"></i>
+                    <span>Add Memory</span>
                 </button>
                 
-                <!-- Print View Button -->
-                <button onclick="openPrintModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-amberGold-500 hover:bg-amberGold-600 text-white font-semibold text-xs rounded-xl shadow-md transition-all">
-                    <i class="fa-solid fa-print"></i>
-                    <span>Print Album</span>
-                </button>
+                <div class="relative group">
+                    <button class="w-9 h-9 rounded-md border border-linen-300 bg-linen-50 hover:bg-linen-200 text-charcoal-800 flex items-center justify-center transition-colors text-xs" title="Album Options">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white border border-linen-300 rounded-md shadow-lg py-1 hidden group-hover:block z-40">
+                        <button onclick="exportData()" class="w-full text-left px-4 py-2 text-xs text-charcoal-800 hover:bg-linen-100 flex items-center gap-2">
+                            <i class="fa-solid fa-download text-taupe"></i> Export Album (JSON)
+                        </button>
+                        <label class="w-full text-left px-4 py-2 text-xs text-charcoal-800 hover:bg-linen-100 cursor-pointer flex items-center gap-2">
+                            <i class="fa-solid fa-upload text-taupe"></i> Import Album
+                            <input type="file" id="import-file-input" onchange="importData(event)" accept=".json" class="hidden">
+                        </label>
+                        <div class="border-t border-linen-200 my-1"></div>
+                        <button onclick="resetDefaultMemories()" class="w-full text-left px-4 py-2 text-xs text-sienna-600 hover:bg-linen-100 flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Demo Photos
+                        </button>
+                    </div>
+                </div>
             </div>
+
         </div>
     </header>
 
     <!-- ================= TOP HERO COVER SECTION ================= -->
-    <section id="hero" class="relative hero-banner py-20 sm:py-28 lg:py-36 text-parchment-50 text-center border-b border-parchment-300 overflow-hidden shadow-2xl">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-12 w-full">
+        <div class="relative w-full rounded-xl overflow-hidden editorial-frame p-3 sm:p-4 bg-white">
             
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-parchment-100/20 backdrop-blur-md border border-amberGold-400/50 text-amberGold-400 text-xs font-semibold tracking-widest uppercase shadow-sm">
-                <i class="fa-solid fa-heart text-terracotta-500"></i> Dedicated to Mom & Dad
-            </div>
-            
-            <div class="space-y-2">
-                <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight drop-shadow-lg text-parchment-50">
-                    Our Story Book
-                </h1>
-                <p class="font-cursive text-3xl sm:text-4xl text-amberGold-400">Growing Up With You</p>
-            </div>
-
-            <!-- Main Cover Photo Frame -->
-            <div class="max-w-md mx-auto p-4 bg-white/95 rounded-2xl polaroid-shadow border-4 border-amberGold-400/60 transform -rotate-1 hover:rotate-0 transition-transform duration-500 relative group">
-                <div class="relative h-64 sm:h-72 overflow-hidden rounded-xl bg-parchment-200">
-                    <img id="hero-cover-img" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1000&q=80" 
-                         alt="Family Cover Photo" class="w-full h-full object-cover">
-                    
-                    <button onclick="changePhotoPrompt('hero-cover-img')" class="absolute bottom-3 right-3 bg-warmNavy-900/80 hover:bg-amberGold-500 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-camera mr-1"></i> Replace Photo
-                    </button>
-                </div>
-                <div class="pt-3 text-center">
-                    <p class="font-serif text-slate-800 text-base font-bold">The Years of Memories & Magic</p>
-                    <p class="text-xs text-slate-500 italic mt-0.5">Thank you for making our childhood unforgettable.</p>
-                </div>
-            </div>
-
-            <p class="text-base sm:text-lg text-parchment-100 max-w-xl mx-auto font-light leading-relaxed drop-shadow">
-                A personal collection of milestones, childhood stories, holiday road trips, and heartfelt moments saved over the years.
-            </p>
-
-            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#flip-book" class="w-full sm:w-auto px-8 py-3.5 bg-amberGold-500 hover:bg-amberGold-600 text-warmNavy-900 font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-book-open-reader"></i> Turn the Pages
-                </a>
-                <a href="#letter" class="w-full sm:w-auto px-8 py-3.5 bg-parchment-100/20 hover:bg-parchment-100/30 backdrop-blur-md border border-parchment-200 text-parchment-50 font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-envelope"></i> Read Letter
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= MAIN CONTENT ================= -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
-
-        <!-- SECTION 1: A LETTER TO MOM & DAD -->
-        <section id="letter" class="scroll-mt-24">
-            <div class="max-w-3xl mx-auto bg-white rounded-3xl p-8 sm:p-14 polaroid-shadow border border-parchment-300 relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-amberGold-400/10 rounded-full blur-2xl"></div>
+            <!-- Cover Picture Frame -->
+            <div class="relative h-[340px] sm:h-[460px] md:h-[540px] w-full rounded-lg overflow-hidden bg-linen-200 group">
+                <img id="hero-cover-img" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80" 
+                     alt="Album Cover" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] transition-transform duration-700 group-hover:scale-105">
                 
-                <div class="text-center space-y-2 mb-8">
-                    <span class="text-amberGold-700 font-semibold text-xs uppercase tracking-widest">A Heartfelt Note</span>
-                    <h2 class="font-cursive text-4xl sm:text-5xl text-warmNavy-900">Dear Mom & Dad,</h2>
-                    <div class="w-16 h-0.5 bg-amberGold-500 mx-auto rounded-full"></div>
-                </div>
+                <!-- Dark Overlay for Readability -->
+                <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/85 via-charcoal-900/30 to-transparent"></div>
 
-                <div class="prose prose-slate max-w-none text-slate-700 text-base sm:text-lg leading-relaxed font-serif space-y-6 italic">
-                    <p>
-                        Looking back through the photos and stories from over the years, one thing is abundantly clear: every single highlight of my childhood was shaped by your selfless love, endless patience, and constant encouragement.
-                    </p>
-                    <p>
-                        From teaching me how to ride a bike to driving across the country for family vacations, you created a warm home full of laughter and safety. This digital story book is a small tribute to you—a collection of our absolute peak moments together over the years.
-                    </p>
-                    <p class="not-italic text-right font-cursive text-3xl text-amberGold-700 pt-4">
-                        With all my love,<br>Always & Forever ❤️
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: INTERACTIVE CHAPTER PAGE-TURNER SLIDESHOW -->
-        <section id="flip-book" class="scroll-mt-24 space-y-8">
-            <div class="text-center space-y-2">
-                <span class="text-amberGold-700 font-semibold text-xs uppercase tracking-widest">Year by Year Journey</span>
-                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-warmNavy-900">Our Story Chapters</h2>
-                <p class="text-slate-600 text-sm max-w-lg mx-auto">Use the arrows or chapter tabs below to flip through our memories across the years.</p>
-            </div>
-
-            <!-- Chapter Tabs Bar -->
-            <div class="flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="chapter-tabs">
-                <!-- Dynamically generated tabs -->
-            </div>
-
-            <!-- Story Book Page Display Card -->
-            <div class="max-w-4xl mx-auto bg-white rounded-3xl border border-parchment-300 polaroid-shadow overflow-hidden grid grid-cols-1 md:grid-cols-2 min-h-[460px]">
-                
-                <!-- Left Page: Photo Frame -->
-                <div class="relative bg-warmNavy-900 p-6 flex items-center justify-center group min-h-[300px]">
-                    <img id="chapter-img" src="" alt="Chapter Photo" class="w-full h-80 object-cover rounded-2xl shadow-xl transition-all duration-500">
-                    
-                    <button onclick="changePhotoPrompt('chapter-img')" class="absolute top-4 left-4 bg-warmNavy-900/80 hover:bg-amberGold-500 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-camera mr-1"></i> Replace Photo
-                    </button>
-
-                    <div class="absolute bottom-4 left-4 right-4 bg-warmNavy-900/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 text-cream-50 flex justify-between items-center text-xs">
-                        <span id="chapter-year-badge" class="font-semibold text-amberGold-400">Year</span>
-                        <span id="chapter-location" class="text-slate-300">Location</span>
-                    </div>
-                </div>
-
-                <!-- Right Page: Story Text & Controls -->
-                <div class="p-8 sm:p-10 flex flex-col justify-between space-y-6 bg-parchment-50">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between text-xs text-amberGold-700 font-semibold tracking-wider uppercase">
-                            <span id="chapter-number">Chapter 1 of 5</span>
-                            <i class="fa-solid fa-feather text-lg"></i>
+                <!-- Cover Title Overlay -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-12 text-linen-50 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="inline-block px-3 py-1 bg-white/15 backdrop-blur-md rounded-sm border border-white/20 text-linen-100 text-[11px] uppercase tracking-widest font-medium">
+                            Personal Memory Archive
                         </div>
-
-                        <h3 id="chapter-title" class="font-serif text-2xl sm:text-3xl font-bold text-warmNavy-900">
-                            Chapter Title
-                        </h3>
-
-                        <p id="chapter-description" class="text-slate-700 text-sm sm:text-base leading-relaxed font-normal">
-                            Chapter description story details go here...
+                        <h1 id="hero-title" class="font-serif text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-white leading-none">
+                            Story Book
+                        </h1>
+                        <p id="hero-subtitle" class="font-serif italic text-lg sm:text-2xl text-linen-200 font-normal">
+                            Mom & Dad — Memory Album
                         </p>
                     </div>
 
-                    <!-- Highlight Quote -->
-                    <div class="p-4 rounded-2xl bg-amberGold-400/10 border-l-4 border-amberGold-500 italic text-xs text-warmNavy-800">
-                        "<span id="chapter-quote">Special quote here</span>"
-                    </div>
-
-                    <!-- Page Navigation Controls -->
-                    <div class="pt-4 border-t border-parchment-300 flex items-center justify-between">
-                        <button onclick="prevChapter()" class="px-5 py-2.5 rounded-xl border border-parchment-300 bg-white hover:bg-parchment-200 text-warmNavy-900 text-xs font-bold transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-left"></i> Previous Page
-                        </button>
-
-                        <button onclick="nextChapter()" class="px-6 py-2.5 rounded-xl bg-amberGold-500 hover:bg-amberGold-600 text-white text-xs font-bold shadow-md transition-all flex items-center gap-2">
-                            Next Page <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
+                    <!-- Customize Cover Button -->
+                    <button onclick="editCoverModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 text-white rounded-md text-xs font-medium transition-all self-start md:self-end">
+                        <i class="fa-solid fa-camera"></i>
+                        <span>Change Cover Photo</span>
+                    </button>
                 </div>
-
-            </div>
-        </section>
-
-        <!-- SECTION 3: BOTTOM PHOTO GALLERY WITH DESCRIPTIONS -->
-        <section id="gallery" class="scroll-mt-24 space-y-8">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-parchment-300 pb-6">
-                <div>
-                    <span class="text-amberGold-700 font-semibold text-xs uppercase tracking-widest">Memory Album</span>
-                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-warmNavy-900">Pictures & Peak Moments</h2>
-                </div>
-                <p class="text-xs text-slate-500 italic">Click any photo card to read full stories or replace photos.</p>
             </div>
 
-            <!-- Gallery Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
-                <!-- Injected via JavaScript -->
+        </div>
+    </section>
+
+    <!-- ================= MAIN ALBUM CONTENT ================= -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow space-y-8">
+
+        <!-- ALBUM FILTER BAR & COUNTER -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-linen-300 pb-5">
+            
+            <!-- Era / Category Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="category-filters">
+                <button onclick="filterCategory('All')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-charcoal-900 bg-charcoal-900 text-linen-50" data-cat="All">
+                    All Memories
+                </button>
+                <button onclick="filterCategory('Early Years')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Early Years">
+                    Early Years
+                </button>
+                <button onclick="filterCategory('Family Trips')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Family Trips">
+                    Family Trips
+                </button>
+                <button onclick="filterCategory('Everyday Moments')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Everyday Moments">
+                    Everyday Moments
+                </button>
+                <button onclick="filterCategory('Celebrations')" class="cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700" data-cat="Celebrations">
+                    Celebrations
+                </button>
             </div>
-        </section>
+
+            <!-- Item Counter -->
+            <div class="text-xs text-taupe font-medium self-end sm:self-center">
+                Showing <span id="memory-count" class="font-semibold text-charcoal-900">0</span> photos
+            </div>
+        </div>
+
+        <!-- MASONRY GALLERY STREAM -->
+        <div class="masonry-grid" id="album-gallery">
+            <!-- Dynamically Rendered Memory Cards -->
+        </div>
+
+        <!-- EMPTY STATE (Shown if no items match filter) -->
+        <div id="empty-state" class="hidden text-center py-20 border border-dashed border-linen-300 rounded-xl bg-white/50 space-y-4">
+            <div class="w-12 h-12 rounded-full bg-linen-200 text-taupe flex items-center justify-center mx-auto text-xl">
+                <i class="fa-regular fa-image"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="font-serif text-xl font-semibold text-charcoal-900">No memories found</h3>
+                <p class="text-xs text-taupe max-w-sm mx-auto">There are no photos in this category yet. Click "Add Memory" to upload a new moment.</p>
+            </div>
+            <button onclick="openAddModal()" class="px-4 py-2 bg-charcoal-900 text-white text-xs font-medium rounded-md hover:bg-sienna-600 transition-colors inline-flex items-center gap-2">
+                <i class="fa-solid fa-plus text-[10px]"></i> Add Photo
+            </button>
+        </div>
 
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="bg-warmNavy-900 text-parchment-100 border-t border-warmNavy-800 py-12 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div class="w-10 h-10 rounded-full bg-amberGold-500 text-warmNavy-900 flex items-center justify-center font-serif font-bold mx-auto text-lg">
-                <i class="fa-solid fa-heart"></i>
+    <footer class="border-t border-linen-300 bg-linen-100 py-12 mt-20 text-charcoal-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <h4 class="font-serif text-xl font-semibold text-charcoal-900">Story Book</h4>
+                <p class="text-xs text-taupe mt-1">A curated personal photo archive for Mom & Dad.</p>
             </div>
-            <h3 class="font-serif text-xl font-bold text-parchment-50">Our Story Book</h3>
-            <p class="text-xs text-slate-400 max-w-md mx-auto">Crafted with love for Mom & Dad to preserve our family's greatest memories over the years.</p>
-            <div class="pt-4 text-[11px] text-slate-500">
-                Forever Grateful • Family Digital Memory Archive
+            <div class="text-xs text-taupe">
+                Handcrafted Family Memory Keepsake
             </div>
         </div>
     </footer>
 
-    <!-- ================= MODAL: EXPANDED PHOTO STORY ================= -->
-    <div id="photo-modal" class="fixed inset-0 z-50 hidden bg-warmNavy-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-parchment-300 relative transform transition-all" id="modal-card">
+    <!-- ================= LIGHTBOX MODAL ================= -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8">
+        <div class="relative max-w-5xl w-full bg-white rounded-xl overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh]">
             
-            <div class="relative h-64 sm:h-72 bg-parchment-200">
-                <img id="modal-img" src="" alt="Memory detail" class="w-full h-full object-cover">
-                <button onclick="closePhotoModal()" class="absolute top-4 right-4 bg-warmNavy-900/70 hover:bg-warmNavy-900 text-white rounded-full w-9 h-9 flex items-center justify-center text-sm shadow-lg transition-colors">
+            <!-- Close Button -->
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-charcoal-900/70 hover:bg-charcoal-900 text-white flex items-center justify-center text-sm transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Lightbox Image Viewport -->
+            <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center overflow-hidden min-h-[300px] lg:min-h-[500px]">
+                <img id="lb-image" src="" alt="Enlarged memory" class="max-h-[80vh] w-auto max-w-full object-contain p-2">
+                
+                <!-- Navigation Arrows -->
+                <button onclick="navigateLightbox(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                </button>
+                <button onclick="navigateLightbox(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Lightbox Sidebar Details -->
+            <div class="w-full lg:w-96 p-6 sm:p-8 bg-linen-50 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-linen-300 overflow-y-auto">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between text-xs font-medium text-sienna-600">
+                        <span id="lb-date"><i class="fa-regular fa-calendar mr-1.5"></i> Year</span>
+                        <span id="lb-category" class="px-2.5 py-0.5 bg-linen-200 text-charcoal-800 rounded-full text-[11px]">Category</span>
+                    </div>
+
+                    <h3 id="lb-title" class="font-serif text-2xl sm:text-3xl font-semibold text-charcoal-900 leading-tight">
+                        Memory Title
+                    </h3>
+
+                    <div class="w-12 h-0.5 bg-sienna-600"></div>
+
+                    <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed whitespace-pre-line font-normal">
+                        Memory story description goes here...
+                    </p>
+                </div>
+
+                <div class="pt-6 mt-6 border-t border-linen-300 flex items-center justify-between">
+                    <button onclick="quickEditCurrentLightbox()" class="text-xs text-charcoal-800 hover:text-sienna-600 font-medium flex items-center gap-1.5">
+                        <i class="fa-regular fa-pen-to-square"></i> Edit Entry
+                    </button>
+                    <button onclick="deleteCurrentLightbox()" class="text-xs text-red-600 hover:text-red-700 font-medium flex items-center gap-1.5">
+                        <i class="fa-regular fa-trash-can"></i> Remove
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= ADD / EDIT MEMORY MODAL ================= -->
+    <div id="form-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-linen-300 space-y-6 max-h-[90vh] overflow-y-auto">
+            
+            <div class="flex items-center justify-between border-b border-linen-300 pb-4">
+                <h3 id="form-modal-title" class="font-serif text-2xl font-semibold text-charcoal-900">Add New Memory</h3>
+                <button onclick="closeFormModal()" class="text-taupe hover:text-charcoal-900 text-base">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="p-6 sm:p-8 space-y-4">
-                <div class="flex items-center justify-between text-xs text-amberGold-700 font-semibold">
-                    <span id="modal-date"><i class="fa-solid fa-calendar mr-1"></i> Date</span>
-                    <span id="modal-tag" class="px-2.5 py-1 bg-parchment-200 text-warmNavy-800 rounded-lg">Category</span>
+            <form id="memory-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="form-id">
+
+                <!-- Title Input -->
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Title / Caption *</label>
+                    <input type="text" id="form-title" required placeholder="e.g. Summer Vacation at the Lake" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
                 </div>
 
-                <h3 id="modal-title" class="font-serif text-2xl font-bold text-warmNavy-900">Photo Title</h3>
-                
-                <p id="modal-desc" class="text-slate-700 text-sm leading-relaxed">
-                    Description...
-                </p>
+                <!-- Date / Year & Category Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-charcoal-800 mb-1">Date or Year *</label>
+                        <input type="text" id="form-date" required placeholder="e.g. August 2004" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-charcoal-800 mb-1">Category *</label>
+                        <select id="form-category" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
+                            <option value="Early Years">Early Years</option>
+                            <option value="Family Trips">Family Trips</option>
+                            <option value="Everyday Moments">Everyday Moments</option>
+                            <option value="Celebrations">Celebrations</option>
+                        </select>
+                    </div>
+                </div>
 
-                <div class="pt-4 border-t border-parchment-200 flex justify-end gap-3">
-                    <button onclick="closePhotoModal()" class="px-5 py-2 rounded-xl bg-amberGold-500 text-white text-xs font-bold hover:bg-amberGold-600">
-                        Close
+                <!-- Image Source Options -->
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Photo Source *</label>
+                    <div class="space-y-2">
+                        <input type="url" id="form-img-url" placeholder="Paste Photo Image Web URL (http://...)" oninput="handleUrlInput()" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50">
+                        <div class="text-[11px] text-center text-taupe font-medium my-1">— OR —</div>
+                        <input type="file" id="form-img-file" accept="image/*" onchange="handleFileInput(event)" class="w-full text-xs text-taupe file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-linen-200 file:text-charcoal-800 hover:file:bg-linen-300 cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Image Preview Box -->
+                <div id="img-preview-container" class="hidden relative h-40 w-full bg-linen-200 rounded-md overflow-hidden border border-linen-300">
+                    <img id="form-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Description Input -->
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Story / Description</label>
+                    <textarea id="form-desc" rows="3" placeholder="Write a description or memory story attached to this photo..." class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md focus:outline-none focus:border-sienna-600 bg-linen-50"></textarea>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="pt-3 border-t border-linen-300 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeFormModal()" class="px-4 py-2 border border-linen-300 rounded-md text-xs font-medium text-charcoal-800 hover:bg-linen-100">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2 bg-charcoal-900 hover:bg-sienna-600 text-white rounded-md text-xs font-medium shadow-sm transition-colors">
+                        Save Memory
                     </button>
                 </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ================= EDIT COVER MODAL ================= -->
+    <div id="cover-modal" class="fixed inset-0 z-50 hidden bg-charcoal-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border border-linen-300 space-y-4">
+            <div class="flex items-center justify-between border-b border-linen-300 pb-3">
+                <h3 class="font-serif text-xl font-semibold text-charcoal-900">Customize Album Cover</h3>
+                <button onclick="closeCoverModal()" class="text-taupe hover:text-charcoal-900 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Album Title</label>
+                    <input type="text" id="cover-title-input" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Subtitle</label>
+                    <input type="text" id="cover-subtitle-input" class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-charcoal-800 mb-1">Cover Image URL</label>
+                    <input type="url" id="cover-img-input" placeholder="http://..." class="w-full px-3 py-2 text-xs border border-linen-300 rounded-md bg-linen-50">
+                </div>
+            </div>
+            <div class="pt-3 border-t border-linen-300 flex justify-end gap-2">
+                <button onclick="closeCoverModal()" class="px-4 py-1.5 border border-linen-300 rounded-md text-xs font-medium text-charcoal-800">Cancel</button>
+                <button onclick="saveCoverDetails()" class="px-4 py-1.5 bg-charcoal-900 hover:bg-sienna-600 text-white rounded-md text-xs font-medium">Save Cover</button>
             </div>
         </div>
     </div>
 
-    <!-- ================= PRINTABLE ALBUM CONTAINER ================= -->
-    <div id="printable-album" class="hidden p-8 bg-white text-slate-900 space-y-10">
-        <div class="text-center space-y-2 border-b pb-6">
-            <h1 class="font-serif text-4xl font-bold">Our Story Book: Growing Up With You</h1>
-            <p class="text-sm text-slate-600">A Family Keepsake for Mom & Dad</p>
-        </div>
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 
-        <div id="print-content" class="space-y-8">
-            <!-- Populated via JS for print -->
-        </div>
-    </div>
-
-    <!-- AUDIO SIMULATION -->
-    <audio id="bg-audio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=piano-moment-114495.mp3"></audio>
-
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
     <script>
-        // Story Chapters (The flipbook pages over the years)
-        const CHAPTERS = [
+        // Initial Default Memories Data
+        const DEFAULT_MEMORIES = [
             {
-                year: "1998 — Early Days",
-                title: "Chapter 1: Baby Steps & First Words",
-                location: "Our First Family Home",
-                quote: "You celebrated every tiny milestone like it was the biggest achievement in the world.",
-                description: "From midnight feedings to high-fives on the living room rug, you made my earliest years full of warmth, lullabies, and unconditional security.",
-                photoUrl: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80"
+                id: 'mem-1',
+                title: "Lake Tahoe Summer Trip",
+                date: "July 2004",
+                category: "Family Trips",
+                description: "Driving up the mountain pass with the trunk overflowing. Mom packed three coolers full of sandwiches, and Dad played old classic rock tapes all afternoon.",
+                imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=80"
             },
             {
-                year: "2004 — Childhood Adventures",
-                title: "Chapter 2: Summer Holidays & Road Trips",
-                location: "The Grand Canyon Highway",
-                quote: "No matter how long the drive was, Mom made snacks and Dad sang classic rock.",
-                description: "Our legendary summer road trips in the packed car. We listened to old cassettes, counted state license plates, and ate ice cream on tailgate benches.",
-                photoUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80"
+                id: 'mem-2',
+                title: "Learning to Ride a Bike",
+                date: "May 1998",
+                category: "Early Years",
+                description: "Dad running right behind the little red bicycle down the driveway, letting go without telling me so I'd realize I was balancing all by myself.",
+                imageUrl: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=1000&q=80"
             },
             {
-                year: "2010 — School & Traditions",
-                title: "Chapter 3: Science Fairs & Sunday Dinners",
-                location: "Kitchen & Backyard",
-                quote: "Dad helped build project boards until midnight; Mom made sure everyone ate together.",
-                description: "You never missed a school play, soccer game, or award ceremony. Sunday family dinners were sacred traditions filled with garlic bread and laughter.",
-                photoUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
+                id: 'mem-3',
+                title: "Sunday Coffee on the Porch",
+                date: "October 2012",
+                category: "Everyday Moments",
+                description: "The quiet morning routine before the rest of the house woke up. Crisp autumn morning, steaming mugs, and reading the newspaper together.",
+                imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80"
             },
             {
-                year: "2016 — Teen Years",
-                title: "Chapter 4: Graduation & Milestone Moments",
-                location: "High School Stadium",
-                quote: "Standing in the audience, your proud smiles gave me all the confidence in the world.",
-                description: "Through teenage years, driving lessons, and big life choices, you were my absolute anchor. You taught me how to work hard, stay humble, and be kind.",
-                photoUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
+                id: 'mem-4',
+                title: "Silver Wedding Anniversary",
+                date: "September 2018",
+                category: "Celebrations",
+                description: "Surprise dinner party at the old neighborhood Italian restaurant surrounded by family and lifelong friends celebrating 25 wonderful years.",
+                imageUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80"
             },
             {
-                year: "Present Day — Forever Grateful",
-                title: "Chapter 5: Thank You, Mom & Dad",
-                location: "Home",
-                quote: "The older I grow, the more I realize that having you as parents was life's greatest gift.",
-                description: "Thank you for every sacrifice, every lesson, and every memory saved over the years. Here's to many more peak moments together!",
-                photoUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80"
+                id: 'mem-5',
+                title: "First Winter Snowfall",
+                date: "December 2001",
+                category: "Everyday Moments",
+                description: "Mom making hot cinnamon cocoa while we attempted to build a massive snowman in the front garden right after the first big snowstorm.",
+                imageUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1000&q=80"
+            },
+            {
+                id: 'mem-6',
+                title: "Coastal Sunset Walk",
+                date: "August 2015",
+                tag: "Family Trips",
+                category: "Family Trips",
+                description: "Walking along the shoreline until the sun went completely below the horizon. The sound of waves and endless ocean air.",
+                imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
             }
         ];
 
-        // Bottom Gallery Photo Items
-        const GALLERY_ITEMS = [
-            {
-                id: 'gal-1',
-                title: "Camping Under the Stars",
-                date: "August 2005",
-                tag: "Adventure",
-                desc: "Grandpa and Dad teaching us how to build a campfire and cook s'mores without burning them.",
-                photoUrl: "https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 'gal-2',
-                title: "Christmas Morning Traditions",
-                date: "December 2008",
-                tag: "Holidays",
-                desc: "Waking up at 6 AM to hot cinnamon rolls, matching pajamas, and Mom filming everything.",
-                photoUrl: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 'gal-3',
-                title: "Beach Days & Sunsets",
-                date: "July 2012",
-                tag: "Vacation",
-                desc: "Building giant sandcastles and staying on the coast until the sun went completely down.",
-                photoUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 'gal-4',
-                title: "Family Backyard BBQ",
-                date: "June 2015",
-                tag: "Home",
-                desc: "Dad's secret marinade burgers and endless garden games with all the relatives.",
-                photoUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 'gal-5',
-                title: "Learning to Drive",
-                date: "March 2017",
-                tag: "Milestone",
-                desc: "Dad holding on to the dashboard in an empty parking lot while encouraging me to relax.",
-                photoUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 'gal-6',
-                title: "Surprise Anniversary Party",
-                date: "October 2021",
-                tag: "Celebration",
-                desc: "Celebrating 25 years of Mom & Dad's incredible love story with all their closest friends.",
-                photoUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80"
-            }
-        ];
+        const DEFAULT_COVER = {
+            title: "Story Book",
+            subtitle: "Mom & Dad — Memory Album",
+            imageUrl: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80"
+        };
 
-        let currentChapterIndex = 0;
-        let isAudioPlaying = false;
+        // Application State
+        let memories = [];
+        let coverData = { ...DEFAULT_COVER };
+        let activeCategory = 'All';
+        let currentLightboxIndex = -1;
+        let currentFilteredMemories = [];
 
-        window.addEventListener('DOMContentLoaded', () => {
-            renderChapterTabs();
-            displayChapter(0);
+        // DOM Loaded Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            renderCover();
             renderGallery();
-        });
 
-        // Chapter Flip Logic
-        function renderChapterTabs() {
-            const container = document.getElementById('chapter-tabs');
-            container.innerHTML = CHAPTERS.map((ch, idx) => `
-                <button onclick="displayChapter(${idx})" class="chapter-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border border-parchment-300 ${idx === 0 ? 'bg-amberGold-500 text-white' : 'bg-white text-warmNavy-800 hover:bg-parchment-200'}" data-idx="${idx}">
-                    Ch ${idx + 1}
-                </button>
-            `).join('');
-        }
-
-        function displayChapter(index) {
-            currentChapterIndex = index;
-            const ch = CHAPTERS[index];
-
-            document.getElementById('chapter-img').src = ch.photoUrl;
-            document.getElementById('chapter-year-badge').textContent = ch.year;
-            document.getElementById('chapter-location').textContent = ch.location;
-            document.getElementById('chapter-number').textContent = `Chapter ${index + 1} of ${CHAPTERS.length}`;
-            document.getElementById('chapter-title').textContent = ch.title;
-            document.getElementById('chapter-description').textContent = ch.description;
-            document.getElementById('chapter-quote').textContent = ch.quote;
-
-            // Highlight active tab
-            document.querySelectorAll('.chapter-tab-btn').forEach(btn => {
-                const btnIdx = parseInt(btn.getAttribute('data-idx'));
-                if (btnIdx === index) {
-                    btn.className = "chapter-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border border-amberGold-500 bg-amberGold-500 text-white shadow-sm";
-                } else {
-                    btn.className = "chapter-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border border-parchment-300 bg-white text-warmNavy-800 hover:bg-parchment-200";
+            // Keyboard navigation for Lightbox
+            document.addEventListener('keydown', (e) => {
+                const lbModal = document.getElementById('lightbox-modal');
+                if (!lbModal.classList.contains('hidden')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') navigateLightbox(-1);
+                    if (e.key === 'ArrowRight') navigateLightbox(1);
                 }
             });
-        }
+        });
 
-        function nextChapter() {
-            if (currentChapterIndex < CHAPTERS.length - 1) {
-                displayChapter(currentChapterIndex + 1);
+        // Storage Management
+        function loadFromLocalStorage() {
+            const savedMemories = localStorage.getItem('storybook_memories');
+            if (savedMemories) {
+                try {
+                    memories = JSON.parse(savedMemories);
+                } catch(e) {
+                    memories = [...DEFAULT_MEMORIES];
+                }
             } else {
-                displayChapter(0); // loop back
+                memories = [...DEFAULT_MEMORIES];
+                saveMemoriesToStorage();
             }
-        }
 
-        function prevChapter() {
-            if (currentChapterIndex > 0) {
-                displayChapter(currentChapterIndex - 1);
-            } else {
-                displayChapter(CHAPTERS.length - 1);
-            }
-        }
-
-        // Render Gallery
-        function renderGallery() {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = GALLERY_ITEMS.map(item => `
-                <div class="bg-white rounded-2xl overflow-hidden border border-parchment-300 polaroid-shadow group hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPhotoModal('${item.id}')">
-                    <div class="relative h-56 bg-parchment-200 overflow-hidden">
-                        <img id="img-${item.id}" src="${item.photoUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-bold bg-warmNavy-900/80 text-parchment-50 backdrop-blur-md">
-                            ${item.tag}
-                        </span>
-                        <button onclick="event.stopPropagation(); changePhotoPrompt('img-${item.id}')" class="absolute bottom-3 left-3 bg-warmNavy-900/80 hover:bg-amberGold-500 text-white text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                            <i class="fa-solid fa-camera mr-1"></i> Change Photo
-                        </button>
-                    </div>
-
-                    <div class="p-5 space-y-2">
-                        <span class="text-[11px] font-semibold text-amberGold-700 block">${item.date}</span>
-                        <h3 class="font-serif text-lg font-bold text-warmNavy-900 group-hover:text-amberGold-600 transition-colors">${item.title}</h3>
-                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${item.desc}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Photo replacement prompt helper
-        function changePhotoPrompt(imgElementId) {
-            const newUrl = prompt("Enter image URL to customize this photo memory (e.g. paste your own image link):");
-            if (newUrl && newUrl.trim() !== "") {
-                const targetImg = document.getElementById(imgElementId);
-                if (targetImg) {
-                    targetImg.src = newUrl.trim();
+            const savedCover = localStorage.getItem('storybook_cover');
+            if (savedCover) {
+                try {
+                    coverData = JSON.parse(savedCover);
+                } catch(e) {
+                    coverData = { ...DEFAULT_COVER };
                 }
             }
         }
 
-        // Photo Modal Detail
-        function openPhotoModal(id) {
-            const item = GALLERY_ITEMS.find(g => g.id === id);
+        function saveMemoriesToStorage() {
+            localStorage.setItem('storybook_memories', JSON.stringify(memories));
+        }
+
+        function saveCoverToStorage() {
+            localStorage.setItem('storybook_cover', JSON.stringify(coverData));
+        }
+
+        // Render Functions
+        function renderCover() {
+            document.getElementById('hero-cover-img').src = coverData.imageUrl;
+            document.getElementById('hero-title').textContent = coverData.title;
+            document.getElementById('hero-subtitle').textContent = coverData.subtitle;
+        }
+
+        function renderGallery() {
+            const gallery = document.getElementById('album-gallery');
+            const emptyState = document.getElementById('empty-state');
+
+            // Filter logic
+            if (activeCategory === 'All') {
+                currentFilteredMemories = [...memories];
+            } else {
+                currentFilteredMemories = memories.filter(m => m.category === activeCategory);
+            }
+
+            document.getElementById('memory-count').textContent = currentFilteredMemories.length;
+
+            if (currentFilteredMemories.length === 0) {
+                gallery.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Render Masonry Cards
+            gallery.innerHTML = currentFilteredMemories.map((item, idx) => `
+                <div class="masonry-item">
+                    <article class="editorial-frame rounded-lg overflow-hidden group cursor-pointer animate-fade-in" onclick="openLightbox(${idx})">
+                        
+                        <!-- Image Box -->
+                        <div class="relative overflow-hidden bg-linen-200">
+                            <img src="${item.imageUrl}" alt="${escapeHtml(item.title)}" 
+                                 class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                            
+                            <div class="absolute top-3 right-3 px-2.5 py-1 bg-charcoal-900/80 backdrop-blur-sm text-linen-50 rounded text-[10px] uppercase font-medium tracking-wider">
+                                ${escapeHtml(item.category)}
+                            </div>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-5 space-y-2">
+                            <div class="text-[11px] font-semibold text-sienna-600 tracking-wide uppercase">
+                                ${escapeHtml(item.date)}
+                            </div>
+                            <h3 class="font-serif text-xl font-semibold text-charcoal-900 group-hover:text-sienna-600 transition-colors leading-snug">
+                                ${escapeHtml(item.title)}
+                            </h3>
+                            ${item.description ? `
+                                <p class="text-xs text-charcoal-700 leading-relaxed line-clamp-3 font-normal">
+                                    ${escapeHtml(item.description)}
+                                </p>
+                            ` : ''}
+                        </div>
+
+                    </article>
+                </div>
+            `).join('');
+        }
+
+        // Category Filter Handling
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = "cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-charcoal-900 bg-charcoal-900 text-linen-50";
+                } else {
+                    btn.className = "cat-filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all border border-linen-300 bg-white text-charcoal-800 hover:border-charcoal-700";
+                }
+            });
+            renderGallery();
+        }
+
+        // Lightbox Logic
+        function openLightbox(filteredIdx) {
+            currentLightboxIndex = filteredIdx;
+            const item = currentFilteredMemories[filteredIdx];
             if (!item) return;
 
-            const currentImageSrc = document.getElementById(`img-${item.id}`).src;
-            document.getElementById('modal-img').src = currentImageSrc;
-            document.getElementById('modal-title').textContent = item.title;
-            document.getElementById('modal-date').innerHTML = `<i class="fa-solid fa-calendar mr-1"></i> ${item.date}`;
-            document.getElementById('modal-tag').textContent = item.tag;
-            document.getElementById('modal-desc').textContent = item.desc;
+            document.getElementById('lb-image').src = item.imageUrl;
+            document.getElementById('lb-date').innerHTML = `<i class="fa-regular fa-calendar mr-1.5"></i> ${escapeHtml(item.date)}`;
+            document.getElementById('lb-category').textContent = item.category;
+            document.getElementById('lb-title').textContent = item.title;
+            document.getElementById('lb-description').textContent = item.description || 'No detailed description added for this photo memory.';
 
-            const modal = document.getElementById('photo-modal');
-            modal.classList.remove('hidden');
+            document.getElementById('lightbox-modal').classList.remove('hidden');
         }
 
-        function closePhotoModal() {
-            document.getElementById('photo-modal').classList.add('hidden');
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
         }
 
-        // Ambient Audio Switcher
-        function toggleAudio() {
-            const audio = document.getElementById('bg-audio');
-            const icon = document.getElementById('audio-icon');
-            const label = document.getElementById('audio-label');
+        function navigateLightbox(direction) {
+            if (currentFilteredMemories.length === 0) return;
+            currentLightboxIndex += direction;
+            if (currentLightboxIndex < 0) currentLightboxIndex = currentFilteredMemories.length - 1;
+            if (currentLightboxIndex >= currentFilteredMemories.length) currentLightboxIndex = 0;
+            openLightbox(currentLightboxIndex);
+        }
 
-            if (!isAudioPlaying) {
-                audio.play().then(() => {
-                    isAudioPlaying = true;
-                    icon.className = "fa-solid fa-pause text-amberGold-600";
-                    label.textContent = "Pause Music";
-                }).catch(err => {
-                    alert("Click anywhere on page first to allow audio playback!");
-                });
+        function deleteCurrentLightbox() {
+            const item = currentFilteredMemories[currentLightboxIndex];
+            if (!item) return;
+            
+            memories = memories.filter(m => m.id !== item.id);
+            saveMemoriesToStorage();
+            closeLightbox();
+            renderGallery();
+            showToast("Photo memory removed.");
+        }
+
+        function quickEditCurrentLightbox() {
+            const item = currentFilteredMemories[currentLightboxIndex];
+            if (!item) return;
+            closeLightbox();
+            openFormModal(item);
+        }
+
+        // Add / Edit Modal Functions
+        function openAddModal() {
+            openFormModal(null);
+        }
+
+        function openFormModal(editItem = null) {
+            const form = document.getElementById('memory-form');
+            form.reset();
+            document.getElementById('img-preview-container').classList.add('hidden');
+
+            if (editItem) {
+                document.getElementById('form-modal-title').textContent = "Edit Photo Memory";
+                document.getElementById('form-id').value = editItem.id;
+                document.getElementById('form-title').value = editItem.title;
+                document.getElementById('form-date').value = editItem.date;
+                document.getElementById('form-category').value = editItem.category;
+                document.getElementById('form-img-url').value = editItem.imageUrl;
+                document.getElementById('form-desc').value = editItem.description || '';
+                
+                if (editItem.imageUrl) {
+                    showPreview(editItem.imageUrl);
+                }
             } else {
-                audio.pause();
-                isAudioPlaying = false;
-                icon.className = "fa-solid fa-music text-amberGold-600";
-                label.textContent = "Play Music";
+                document.getElementById('form-modal-title').textContent = "Add New Memory";
+                document.getElementById('form-id').value = '';
+            }
+
+            document.getElementById('form-modal').classList.remove('hidden');
+        }
+
+        function closeFormModal() {
+            document.getElementById('form-modal').classList.add('hidden');
+        }
+
+        function handleUrlInput() {
+            const url = document.getElementById('form-img-url').value;
+            if (url) {
+                showPreview(url);
+            } else {
+                document.getElementById('img-preview-container').classList.add('hidden');
             }
         }
 
-        // Print View Trigger
-        function openPrintModal() {
-            const printContent = document.getElementById('print-content');
-            printContent.innerHTML = CHAPTERS.map((ch, idx) => `
-                <div class="border-b pb-6 space-y-2">
-                    <h2 class="font-serif text-2xl font-bold">${ch.title} (${ch.year})</h2>
-                    <p class="text-xs italic text-slate-500">${ch.location}</p>
-                    <p class="text-sm text-slate-800 leading-relaxed">${ch.description}</p>
-                    <p class="text-xs text-amber-700 italic font-semibold">"${ch.quote}"</p>
-                </div>
-            `).join('');
+        function handleFileInput(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const dataUrl = evt.target.result;
+                    document.getElementById('form-img-url').value = dataUrl;
+                    showPreview(dataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
-            window.print();
+        function showPreview(url) {
+            const container = document.getElementById('img-preview-container');
+            const img = document.getElementById('form-img-preview');
+            img.src = url;
+            container.classList.remove('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('form-id').value;
+            const title = document.getElementById('form-title').value;
+            const date = document.getElementById('form-date').value;
+            const category = document.getElementById('form-category').value;
+            const imageUrl = document.getElementById('form-img-url').value || 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1000&q=80';
+            const description = document.getElementById('form-desc').value;
+
+            if (id) {
+                // Update existing
+                const idx = memories.findIndex(m => m.id === id);
+                if (idx !== -1) {
+                    memories[idx] = { id, title, date, category, imageUrl, description };
+                }
+                showToast("Memory updated!");
+            } else {
+                // Add new
+                const newMemory = {
+                    id: 'mem-' + Date.now(),
+                    title,
+                    date,
+                    category,
+                    imageUrl,
+                    description
+                };
+                memories.unshift(newMemory);
+                showToast("New memory added to Story Book!");
+            }
+
+            saveMemoriesToStorage();
+            closeFormModal();
+            renderGallery();
+        }
+
+        // Cover Edit Modal Functions
+        function editCoverModal() {
+            document.getElementById('cover-title-input').value = coverData.title;
+            document.getElementById('cover-subtitle-input').value = coverData.subtitle;
+            document.getElementById('cover-img-input').value = coverData.imageUrl;
+            document.getElementById('cover-modal').classList.remove('hidden');
+        }
+
+        function closeCoverModal() {
+            document.getElementById('cover-modal').classList.add('hidden');
+        }
+
+        function saveCoverDetails() {
+            const t = document.getElementById('cover-title-input').value;
+            const s = document.getElementById('cover-subtitle-input').value;
+            const i = document.getElementById('cover-img-input').value;
+
+            if (t) coverData.title = t;
+            if (s) coverData.subtitle = s;
+            if (i) coverData.imageUrl = i;
+
+            saveCoverToStorage();
+            renderCover();
+            closeCoverModal();
+            showToast("Cover photo customized!");
+        }
+
+        // Import & Export JSON Backup
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ cover: coverData, memories: memories }, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Story_Book_Backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Album backup downloaded!");
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const imported = JSON.parse(evt.target.result);
+                    if (imported.memories && Array.isArray(imported.memories)) {
+                        memories = imported.memories;
+                        if (imported.cover) coverData = imported.cover;
+                        saveMemoriesToStorage();
+                        saveCoverToStorage();
+                        renderCover();
+                        renderGallery();
+                        showToast("Album successfully restored!");
+                    } else {
+                        showToast("Invalid JSON album format.");
+                    }
+                } catch(err) {
+                    showToast("Error reading JSON file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetDefaultMemories() {
+            memories = [...DEFAULT_MEMORIES];
+            coverData = { ...DEFAULT_COVER };
+            saveMemoriesToStorage();
+            saveCoverToStorage();
+            renderCover();
+            renderGallery();
+            showToast("Demo photo album restored.");
+        }
+
+        // Utility: Toast Notification
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "px-4 py-2.5 bg-charcoal-900 text-linen-50 text-xs font-medium rounded-md shadow-lg border border-charcoal-700 animate-fade-in flex items-center gap-2";
+            toast.innerHTML = `<i class="fa-solid fa-check text-sienna-600"></i> ${escapeHtml(message)}`;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>

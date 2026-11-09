@@ -49,10 +49,10 @@
             color: #18181B;
         }
 
-        .paper-texture {
-            background-color: #F8F6F0;
-            background-image: radial-gradient(#E5E5E0 0.75px, transparent 0.75px);
-            background-size: 16px 16px;
+        /* Remove all harsh black focus outlines across all interactive elements */
+        button:focus, a:focus, button:focus-visible, a:focus-visible, [tabindex]:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         /* Custom subtle scrollbars */
@@ -71,13 +71,40 @@
             background: #A1A1AA;
         }
 
+        /* Responsive card transitions */
         .story-card {
             background: #FFFFFF;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, box-shadow;
         }
         .story-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(24, 24, 27, 0.08);
+            transform: translateY(-4px) scale(1.005);
+            box-shadow: 0 20px 40px -12px rgba(24, 24, 27, 0.1);
+        }
+        .story-card:active {
+            transform: translateY(-1px) scale(0.99);
+        }
+
+        /* Hero Image gentle hover zoom */
+        .hero-cover-img {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-cover-container:hover .hero-cover-img {
+            transform: scale(1.025);
+        }
+
+        /* Category pill button transitions */
+        .cat-pill {
+            transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        color 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cat-pill:hover {
+            transform: translateY(-1.5px);
+        }
+        .cat-pill:active {
+            transform: translateY(0) scale(0.97);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -88,25 +115,95 @@
             scrollbar-width: none;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Staggered Cascade Entrance Animation */
+        @keyframes staggerIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(12px) scale(0.98); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
         }
-        .animate-fade-in {
-            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .animate-stagger-card {
+            animation: staggerIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* Focus rings for keyboard accessibility */
-        button:focus-visible, a:focus-visible {
-            outline: 2px solid #18181B;
-            outline-offset: 2px;
+        /* Lightbox Backdrop Fade */
+        @keyframes backdropFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Lightbox Modal Card Scale-up */
+        @keyframes modalScaleUp {
+            from { 
+                opacity: 0; 
+                transform: scale(0.95) translateY(8px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) translateY(0); 
+            }
+        }
+
+        .modal-backdrop {
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-backdrop:not(.hidden) {
+            animation: backdropFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .modal-backdrop:not(.hidden) #lb-card-container {
+            animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Lightbox Image Switch Transition */
+        .lb-img-swap {
+            animation: imgSwap 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes imgSwap {
+            0% { opacity: 0.3; transform: scale(0.97); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Directional Lightbox Slide Animations */
+        .lb-slide-next {
+            animation: slideNext 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .lb-slide-prev {
+            animation: slidePrev 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideNext {
+            0% { opacity: 0.2; transform: translateX(12px) scale(0.98); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes slidePrev {
+            0% { opacity: 0.2; transform: translateX(-12px) scale(0.98); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        /* Image Lazy Load Fade-In */
+        .img-fade-in {
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .img-fade-in.loaded {
+            opacity: 1;
+        }
+
+        /* Respect reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
-<body class="paper-texture font-sans min-h-screen flex flex-col antialiased selection:bg-charcoal-900 selection:text-white relative">
-
-    <!-- Ambient HTML5 Background Canvas -->
-    <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+<body class="font-sans min-h-screen flex flex-col antialiased selection:bg-charcoal-900 selection:text-white relative">
 
     <!-- ================= NAVIGATION HEADER ================= -->
     <header class="bg-[#F8F6F0]/90 sticky top-0 z-30 backdrop-blur-md">
@@ -125,11 +222,10 @@
 
     <!-- ================= HERO COVER ================= -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-4 w-full z-10 relative">
-        <div class="relative w-full rounded-3xl bg-white p-3 sm:p-4 shadow-sm">
+        <div class="relative w-full rounded-3xl bg-white p-3 sm:p-4 shadow-sm hero-cover-container overflow-hidden">
             <div class="relative h-[260px] sm:h-[360px] md:h-[420px] w-full rounded-2xl overflow-hidden bg-linen-200">
-                
                 <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80" 
-                     alt="Cover photo" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02]">
+                     alt="Cover photo" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] hero-cover-img">
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent"></div>
 
@@ -138,21 +234,19 @@
                         Story Book
                     </h1>
                 </div>
-
             </div>
         </div>
     </section>
 
     <!-- ================= MAIN CONTENT & CATEGORIES ================= -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full flex-grow space-y-8 z-10 relative">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full flex-grow space-y-6 z-10 relative">
 
-        <!-- CATEGORY NAVIGATION BAR -->
-        <div class="flex items-center justify-between pb-2">
-            
+        <!-- CATEGORY NAVIGATION & DYNAMIC COUNT BAR -->
+        <div class="space-y-3">
             <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar w-full" id="category-bar" role="tablist" aria-label="Photo categories">
                 
                 <!-- ALL -->
-                <button onclick="filterCategory('All')" data-cat="All" role="tab" aria-selected="true" class="cat-pill active px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center gap-2 transition-all bg-charcoal-900 text-white shadow-sm shrink-0">
+                <button onclick="filterCategory('All')" data-cat="All" role="tab" aria-selected="true" class="cat-pill active px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center gap-2 bg-charcoal-900 text-white shadow-sm shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="3" y="3" width="7" height="7" rx="1.5"/>
                         <rect x="14" y="3" width="7" height="7" rx="1.5"/>
@@ -163,7 +257,7 @@
                 </button>
 
                 <!-- EVERYDAY -->
-                <button onclick="filterCategory('Everyday')" data-cat="Everyday" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
+                <button onclick="filterCategory('Everyday')" data-cat="Everyday" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M17 8h1a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-1"/>
                         <path d="M5 8h12v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"/>
@@ -174,7 +268,7 @@
                 </button>
 
                 <!-- JAPAN -->
-                <button onclick="filterCategory('Japan')" data-cat="Japan" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
+                <button onclick="filterCategory('Japan')" data-cat="Japan" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M3 5h18M2 8h20M6 8v12M18 8v12M6 13h12"/>
                     </svg>
@@ -182,7 +276,7 @@
                 </button>
 
                 <!-- CHILDHOOD -->
-                <button onclick="filterCategory('Childhood')" data-cat="Childhood" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
+                <button onclick="filterCategory('Childhood')" data-cat="Childhood" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/>
                         <path d="M8.5 16.5l3.5-9 3.5 9M9.8 13.2h4.4"/>
@@ -191,7 +285,7 @@
                 </button>
 
                 <!-- FAMILY -->
-                <button onclick="filterCategory('Family')" data-cat="Family" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
+                <button onclick="filterCategory('Family')" data-cat="Family" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M16 21v-1.5a2.5 2.5 0 0 0-2.5-2.5h-3A2.5 2.5 0 0 0 8 19.5V21"/>
                         <circle cx="12" cy="13" r="2.25"/>
@@ -204,7 +298,7 @@
                 </button>
 
                 <!-- SPECIAL MOMENTS -->
-                <button onclick="filterCategory('Special Moments')" data-cat="Special Moments" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
+                <button onclick="filterCategory('Special Moments')" data-cat="Special Moments" role="tab" aria-selected="false" class="cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0">
                     <svg class="w-4 h-4 shrink-0 text-zinc-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/>
                     </svg>
@@ -213,6 +307,10 @@
 
             </div>
 
+            <!-- Understated dynamic result indicator -->
+            <div class="px-1 flex items-center justify-between text-xs text-charcoal-700 font-medium" id="result-indicator" aria-live="polite">
+                <span id="result-text">Showing 10 photographs</span>
+            </div>
         </div>
 
         <!-- PHOTO GALLERY GRID -->
@@ -223,26 +321,26 @@
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="py-12 mt-16 bg-white/50 z-10 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-zinc-400">
+    <footer class="py-12 mt-16 bg-white/40 z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-zinc-500 font-medium">
             <div class="font-serif text-xl font-semibold text-charcoal-900">Story Book</div>
         </div>
     </footer>
 
     <!-- ================= FULLSCREEN LIGHTBOX MODAL ================= -->
-    <!-- Fixed viewport top-right close button to completely avoid tag overlap -->
-    <button id="lb-close-btn" onclick="closeLightbox()" aria-label="Close dialog" class="fixed top-6 right-6 z-50 hidden bg-black/70 hover:bg-black text-white p-3 rounded-full backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-white shadow-xl">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-    </button>
-
-    <div id="lightbox" class="fixed inset-0 z-40 hidden bg-charcoal-900/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+    <div id="lightbox" class="fixed inset-0 z-50 modal-backdrop hidden bg-charcoal-900/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true" aria-labelledby="lb-title">
         
-        <div class="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh]">
+        <!-- Viewport Close Button anchored inside modal dialog context -->
+        <button id="lb-close-btn" onclick="closeLightbox()" aria-label="Close photo viewer" class="fixed top-5 right-5 sm:top-6 sm:right-6 z-50 bg-black/70 hover:bg-black text-white p-3 rounded-full backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-white shadow-xl">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <div id="lb-card-container" class="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh]" onclick="event.stopPropagation()">
             
             <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center min-h-[320px] md:min-h-[480px]">
-                <img id="lb-image" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain p-2">
+                <img id="lb-image" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain p-2 transition-all duration-200">
                 
                 <button onclick="navigateLightbox(-1)" aria-label="Previous photo" class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all backdrop-blur-sm">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -267,62 +365,19 @@
 
                     <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal pt-2"></p>
                 </div>
+
+                <!-- Unobtrusive Photo Counter -->
+                <div class="pt-6 mt-4 flex items-center justify-between text-xs text-zinc-400 font-medium">
+                    <span id="lb-counter">1 / 10</span>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT & CANVAS ANIMATION ================= -->
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
-        // --- Canvas Particle Animation ---
-        const canvas = document.getElementById('ambient-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
-        }
-
-        function initParticles() {
-            particles = [];
-            const count = Math.floor((canvas.width * canvas.height) / 30000);
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5 + 0.5,
-                    alpha: Math.random() * 0.25 + 0.05,
-                    vx: (Math.random() - 0.5) * 0.15,
-                    vy: (Math.random() - 0.5) * 0.1 - 0.04
-                });
-            }
-        }
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(180, 83, 9, ${p.alpha})`;
-                ctx.fill();
-            });
-            requestAnimationFrame(animateCanvas);
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        animateCanvas();
-
-        // --- Category Icons ---
+        // Category Icon System
         const CATEGORY_ICONS = {
             'Everyday': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-1"/><path d="M5 8h12v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"/><path d="M9 2c0 1 1 1.5 1 2.5s-1 1.5-1 2.5"/><path d="M13 2c0 1 1 1.5 1 2.5s-1 1.5-1 2.5"/></svg>`,
             'Japan': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M2 8h20M6 8v12M18 8v12M6 13h12"/></svg>`,
@@ -331,6 +386,10 @@
             'Special Moments': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>`
         };
 
+        // Aspect ratios for subtle editorial gallery variation
+        const ASPECT_RATIOS = ['aspect-[4/3]', 'aspect-[3/2]', 'aspect-[14/10]'];
+
+        // Verified High-Resolution Unsplash Family Memory Image URLs
         const MEMORIES = [
             {
                 id: 'mem-1',
@@ -346,7 +405,7 @@
                 date: 'May 1999',
                 category: 'Childhood',
                 description: 'First trip down the sidewalk without training wheels. Dad held the back of the seat for guidance before letting go on the open pavement.',
-                imageUrl: 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80'
             },
             {
                 id: 'mem-3',
@@ -354,7 +413,7 @@
                 date: 'October 2012',
                 category: 'Everyday',
                 description: 'Fresh coffee brewing while mixing blueberry pancake batter in the yellow ceramic bowl on a sunny weekend morning.',
-                imageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1200&q=80'
             },
             {
                 id: 'mem-4',
@@ -370,7 +429,7 @@
                 date: 'July 2014',
                 category: 'Family',
                 description: 'Two full weeks at the wooden lake cabin. Swimming off the dock during the afternoon and taking evening boat trips around the bay.',
-                imageUrl: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80'
             },
             {
                 id: 'mem-6',
@@ -386,7 +445,7 @@
                 date: 'June 2002',
                 category: 'Childhood',
                 description: 'Building a wooden fort in the branches of the old oak tree using scrap cedar planks and leftover paint.',
-                imageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80'
             },
             {
                 id: 'mem-8',
@@ -394,7 +453,7 @@
                 date: 'November 2016',
                 category: 'Everyday',
                 description: 'A heavy autumn rain held everyone indoors, so we lit the fireplace and spent the afternoon playing classic tabletop games.',
-                imageUrl: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=1200&q=80'
             },
             {
                 id: 'mem-9',
@@ -410,18 +469,23 @@
                 date: 'October 2021',
                 category: 'Family',
                 description: 'Walking through golden maple and aspen trees along the mountain ridge trail during the peak of foliage season.',
-                imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80'
             }
         ];
 
         let currentCategory = 'All';
         let filteredMemories = [...MEMORIES];
         let currentLightboxIndex = -1;
+        let activeTriggerElement = null;
+
+        // Mobile touch swipe tracking variables
+        let touchStartX = 0;
+        let touchEndX = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             renderGallery();
 
-            // Keyboard navigation for lightbox
+            // Keyboard navigation & modal shortcuts
             document.addEventListener('keydown', (e) => {
                 const lb = document.getElementById('lightbox');
                 if (!lb.classList.contains('hidden')) {
@@ -430,7 +494,32 @@
                     if (e.key === 'ArrowRight') navigateLightbox(1);
                 }
             });
+
+            // Close modal on backdrop click
+            const lbModal = document.getElementById('lightbox');
+            lbModal.addEventListener('click', (e) => {
+                if (e.target === lbModal) closeLightbox();
+            });
+
+            // Touch swipe handlers for lightbox
+            lbModal.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            lbModal.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
         });
+
+        function handleSwipe() {
+            const threshold = 40;
+            if (touchEndX < touchStartX - threshold) {
+                navigateLightbox(1); // Swipe left -> Next photo
+            } else if (touchEndX > touchStartX + threshold) {
+                navigateLightbox(-1); // Swipe right -> Prev photo
+            }
+        }
 
         function filterCategory(cat) {
             currentCategory = cat;
@@ -440,14 +529,14 @@
                 const svg = btn.querySelector('svg');
                 if (btnCat === cat) {
                     btn.setAttribute('aria-selected', 'true');
-                    btn.className = "cat-pill active px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center gap-2 transition-all bg-charcoal-900 text-white shadow-sm shrink-0";
+                    btn.className = "cat-pill active px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center gap-2 bg-charcoal-900 text-white shadow-sm shrink-0";
                     if (svg) {
                         svg.classList.remove('text-zinc-500');
                         svg.classList.add('text-white');
                     }
                 } else {
                     btn.setAttribute('aria-selected', 'false');
-                    btn.className = "cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 transition-all bg-white text-zinc-700 hover:bg-zinc-100 shrink-0";
+                    btn.className = "cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0";
                     if (svg) {
                         svg.classList.remove('text-white');
                         svg.classList.add('text-zinc-500');
@@ -460,21 +549,52 @@
 
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
+            const resultText = document.getElementById('result-text');
 
             filteredMemories = MEMORIES.filter(item => {
                 return (currentCategory === 'All') || (item.category === currentCategory);
             });
 
-            grid.innerHTML = filteredMemories.map((item, idx) => `
-                <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-fade-in flex flex-col justify-between" onclick="openLightbox(${idx})">
+            // Update dynamic result indicator
+            const totalCount = filteredMemories.length;
+            if (currentCategory === 'All') {
+                resultText.textContent = `Showing ${totalCount} photographs`;
+            } else {
+                resultText.textContent = `Showing ${totalCount} photograph${totalCount === 1 ? '' : 's'} in ${currentCategory}`;
+            }
+
+            if (totalCount === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-white mx-auto flex items-center justify-center text-zinc-400 shadow-sm">
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <p class="text-sm font-medium text-charcoal-700">No photographs found in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredMemories.map((item, idx) => {
+                const aspectClass = ASPECT_RATIOS[idx % ASPECT_RATIOS.length];
+                const staggerDelay = (idx * 45) + 'ms';
+                return `
+                <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-stagger-card flex flex-col justify-between" 
+                         style="animation-delay: ${staggerDelay};"
+                         onclick="openLightbox(${idx}, this)" 
+                         tabindex="0"
+                         onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openLightbox(${idx}, this); }">
                     
                     <div>
-                        <div class="relative h-60 w-full overflow-hidden bg-linen-200">
+                        <div class="relative ${aspectClass} w-full overflow-hidden bg-linen-200">
                             <img src="${item.imageUrl}" alt="${escapeHtml(item.title)}" 
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                                 class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] img-fade-in"
+                                 loading="lazy"
+                                 decoding="async"
+                                 onload="this.classList.add('loaded')"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80'; this.classList.add('loaded');">
                             
-                            <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 rounded-xl text-[11px] font-semibold flex items-center gap-1.5 shadow-sm">
+                            <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 rounded-xl text-[11px] font-semibold flex items-center gap-1.5 shadow-sm transition-transform duration-200 group-hover:scale-105">
                                 ${CATEGORY_ICONS[item.category] || ''}
                                 <span>${escapeHtml(item.category)}</span>
                             </div>
@@ -496,28 +616,60 @@
                     </div>
 
                 </article>
-            `).join('');
+            `}).join('');
         }
 
-        function openLightbox(idx) {
+        function openLightbox(idx, triggerEl = null, dir = 0) {
             currentLightboxIndex = idx;
+            if (triggerEl) activeTriggerElement = triggerEl;
+
             const item = filteredMemories[idx];
             if (!item) return;
 
-            document.getElementById('lb-image').src = item.imageUrl;
-            document.getElementById('lb-image').alt = item.title;
+            const imgEl = document.getElementById('lb-image');
+            imgEl.classList.remove('lb-img-swap', 'lb-slide-next', 'lb-slide-prev');
+            void imgEl.offsetWidth; // Trigger reflow
+            
+            if (dir > 0) {
+                imgEl.classList.add('lb-slide-next');
+            } else if (dir < 0) {
+                imgEl.classList.add('lb-slide-prev');
+            } else {
+                imgEl.classList.add('lb-img-swap');
+            }
+
+            imgEl.src = item.imageUrl;
+            imgEl.alt = item.title;
             document.getElementById('lb-date').textContent = item.date;
             document.getElementById('lb-category-pill').innerHTML = `${CATEGORY_ICONS[item.category] || ''} ${escapeHtml(item.category)}`;
             document.getElementById('lb-title').textContent = item.title;
             document.getElementById('lb-description').textContent = item.description;
+            
+            // Photo position counter
+            document.getElementById('lb-counter').textContent = `${idx + 1} / ${filteredMemories.length}`;
 
-            document.getElementById('lightbox').classList.remove('hidden');
-            document.getElementById('lb-close-btn').classList.remove('hidden');
+            // Preload next & previous images for instant navigation
+            preloadNeighborImages(idx);
+
+            const lbModal = document.getElementById('lightbox');
+            lbModal.classList.remove('hidden');
+            
+            // Body scroll lock
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
-            document.getElementById('lightbox').classList.add('hidden');
-            document.getElementById('lb-close-btn').classList.add('hidden');
+            const lbModal = document.getElementById('lightbox');
+            lbModal.classList.add('hidden');
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+
+            // Restore focus to trigger card
+            if (activeTriggerElement) {
+                activeTriggerElement.focus();
+                activeTriggerElement = null;
+            }
         }
 
         function navigateLightbox(dir) {
@@ -525,7 +677,19 @@
             currentLightboxIndex += dir;
             if (currentLightboxIndex < 0) currentLightboxIndex = filteredMemories.length - 1;
             if (currentLightboxIndex >= filteredMemories.length) currentLightboxIndex = 0;
-            openLightbox(currentLightboxIndex);
+            openLightbox(currentLightboxIndex, null, dir);
+        }
+
+        function preloadNeighborImages(idx) {
+            if (filteredMemories.length <= 1) return;
+            const prevIdx = (idx - 1 + filteredMemories.length) % filteredMemories.length;
+            const nextIdx = (idx + 1) % filteredMemories.length;
+            
+            const imgPrev = new Image();
+            imgPrev.src = filteredMemories[prevIdx].imageUrl;
+            
+            const imgNext = new Image();
+            imgNext.src = filteredMemories[nextIdx].imageUrl;
         }
 
         function escapeHtml(str) {

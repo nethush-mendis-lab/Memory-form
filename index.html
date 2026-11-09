@@ -19,10 +19,10 @@
                     colors: {
                         linen: {
                             50: '#FDFBF7',
-                            100: '#F8F6F0',
-                            200: '#F0ECE1',
-                            300: '#E5E5E0',
-                            400: '#D4D4CE'
+                            100: '#FAF8F5',
+                            200: '#F4F0E6',
+                            300: '#EFEBE1',
+                            400: '#E2DDCF'
                         },
                         charcoal: {
                             700: '#3F3F46',
@@ -45,33 +45,34 @@
     
     <style>
         body {
-            background-color: #F8F6F0;
+            background: radial-gradient(circle at 50% 0%, #FAF8F5 0%, #F4F0E6 50%, #EFEBE1 100%);
+            background-attachment: fixed;
             color: #18181B;
         }
 
-        /* Remove all default black outline rings across interactive controls */
+        /* Remove default black focus rings across interactive controls */
         button:focus, a:focus, button:focus-visible, a:focus-visible, [tabindex]:focus {
             outline: none !important;
             box-shadow: none !important;
         }
 
-        /* Subtle modern scrollbar */
+        /* Subtle scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #F8F6F0;
+            background: #FAF8F5;
         }
         ::-webkit-scrollbar-thumb {
-            background: #D4D4CE;
+            background: #E2DDCF;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #A1A1AA;
         }
 
-        /* Responsive card transitions */
+        /* Story Card hover effects */
         .story-card {
             background: #FFFFFF;
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -85,7 +86,7 @@
             transform: translateY(-1px) scale(0.99);
         }
 
-        /* Cover Image gentle hover zoom */
+        /* Hero cover image zoom */
         .hero-cover-img {
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -119,7 +120,7 @@
         @keyframes staggerIn {
             from { 
                 opacity: 0; 
-                transform: translateY(12px) scale(0.98); 
+                transform: translateY(14px) scale(0.98); 
             }
             to { 
                 opacity: 1; 
@@ -158,34 +159,34 @@
             animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Lightbox Image Switch Animations */
-        .lb-img-swap {
-            animation: imgSwap 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        /* Direction-Aware Slide Animations for Lightbox */
+        .lb-slide-right {
+            animation: slideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @keyframes imgSwap {
-            0% { opacity: 0.3; transform: scale(0.97); }
-            100% { opacity: 1; transform: scale(1); }
+        .lb-slide-left {
+            animation: slideInLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .lb-fade-swap {
+            animation: fadeSwap 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .lb-slide-next {
-            animation: slideNext 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .lb-slide-prev {
-            animation: slidePrev 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes slideNext {
-            0% { opacity: 0.2; transform: translateX(12px) scale(0.98); }
+        @keyframes slideInRight {
+            0% { opacity: 0.15; transform: translateX(36px) scale(0.98); }
             100% { opacity: 1; transform: translateX(0) scale(1); }
         }
-        @keyframes slidePrev {
-            0% { opacity: 0.2; transform: translateX(-12px) scale(0.98); }
+        @keyframes slideInLeft {
+            0% { opacity: 0.15; transform: translateX(-36px) scale(0.98); }
             100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes fadeSwap {
+            0% { opacity: 0.2; transform: scale(0.97); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         /* Image Lazy Load Fade-In */
         .img-fade-in {
             opacity: 0;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .img-fade-in.loaded {
             opacity: 1;
@@ -205,7 +206,7 @@
 <body class="font-sans min-h-screen flex flex-col antialiased selection:bg-charcoal-900 selection:text-white relative">
 
     <!-- ================= NAVIGATION HEADER ================= -->
-    <header class="bg-[#F8F6F0]/90 sticky top-0 z-30 backdrop-blur-md">
+    <header class="bg-linen-100/80 sticky top-0 z-30 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-charcoal-900 shadow-sm shrink-0">
@@ -240,7 +241,7 @@
     <!-- ================= MAIN CONTENT & CATEGORIES ================= -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full flex-grow space-y-6 z-10 relative">
 
-        <!-- CATEGORY NAVIGATION & DYNAMIC COUNT BAR -->
+        <!-- CATEGORY NAVIGATION -->
         <div class="space-y-3">
             <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar w-full" id="category-bar" role="tablist" aria-label="Photo categories">
                 
@@ -305,11 +306,6 @@
                 </button>
 
             </div>
-
-            <!-- Understated dynamic result indicator -->
-            <div class="px-1 flex items-center justify-between text-xs text-charcoal-700 font-medium" id="result-indicator" aria-live="polite">
-                <span id="result-text">Showing 10 photographs</span>
-            </div>
         </div>
 
         <!-- PHOTO GALLERY GRID -->
@@ -337,29 +333,29 @@
         </button>
 
         <!-- Viewport Fixed Navigation Button: PREVIOUS (Floating in left backdrop margin) -->
-        <button onclick="navigateLightbox(-1)" aria-label="Previous photo" class="fixed left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/75 hover:bg-black text-white flex items-center justify-center transition-all backdrop-blur-md shadow-2xl hover:scale-110 active:scale-95">
+        <button onclick="navigateLightbox(-1)" aria-label="Previous photo" class="fixed left-3 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/75 hover:bg-black text-white flex items-center justify-center transition-all backdrop-blur-md shadow-2xl hover:scale-110 active:scale-95">
             <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6"/>
             </svg>
         </button>
 
         <!-- Viewport Fixed Navigation Button: NEXT (Floating in right backdrop margin) -->
-        <button onclick="navigateLightbox(1)" aria-label="Next photo" class="fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/75 hover:bg-black text-white flex items-center justify-center transition-all backdrop-blur-md shadow-2xl hover:scale-110 active:scale-95">
+        <button onclick="navigateLightbox(1)" aria-label="Next photo" class="fixed right-3 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/75 hover:bg-black text-white flex items-center justify-center transition-all backdrop-blur-md shadow-2xl hover:scale-110 active:scale-95">
             <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M9 18l6-6-6-6"/>
             </svg>
         </button>
 
         <!-- Lightbox Content Card Container with side margins ensuring space for outer arrows -->
-        <div id="lb-card-container" class="relative mx-12 sm:mx-16 md:mx-20 max-w-4xl lg:max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh] my-auto" onclick="event.stopPropagation()">
+        <div id="lb-card-container" class="relative mx-12 sm:mx-16 md:mx-24 max-w-4xl lg:max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh] my-auto" onclick="event.stopPropagation()">
             
             <!-- Photo Presentation Frame -->
             <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[500px] p-4 sm:p-6 overflow-hidden">
-                <img id="lb-image" src="" alt="" class="max-h-[50vh] md:max-h-[78vh] w-auto max-w-full object-contain transition-all duration-200 rounded-lg">
+                <img id="lb-image" src="" alt="" class="max-h-[50vh] md:max-h-[78vh] w-auto max-w-full object-contain rounded-lg">
             </div>
 
             <!-- Memory Story Details Panel -->
-            <div class="w-full md:w-88 lg:w-96 p-6 sm:p-8 bg-linen-50 flex flex-col justify-between overflow-y-auto shrink-0">
+            <div id="lb-details-panel" class="w-full md:w-88 lg:w-96 p-6 sm:p-8 bg-linen-50 flex flex-col justify-between overflow-y-auto shrink-0">
                 <div class="space-y-4">
                     <div class="flex items-center justify-between text-xs sm:text-sm text-terracotta-600 font-semibold">
                         <span id="lb-date"></span>
@@ -369,11 +365,6 @@
                     <h2 id="lb-title" class="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-charcoal-900 leading-tight"></h2>
 
                     <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal pt-1 sm:pt-2"></p>
-                </div>
-
-                <!-- Unobtrusive Photo Counter -->
-                <div class="pt-6 mt-6 flex items-center justify-between text-xs sm:text-sm text-zinc-400 font-medium border-t border-linen-200/60">
-                    <span id="lb-counter">1 / 10</span>
                 </div>
             </div>
 
@@ -391,10 +382,9 @@
             'Special Moments': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>`
         };
 
-        // Aspect ratios for subtle editorial gallery variation
         const ASPECT_RATIOS = ['aspect-[4/3]', 'aspect-[3/2]', 'aspect-[14/10]'];
 
-        // Verified High-Resolution Unsplash Family Memory Image URLs
+        // Verified High-Resolution Unsplash Family Memory Images
         const MEMORIES = [
             {
                 id: 'mem-1',
@@ -483,14 +473,14 @@
         let currentLightboxIndex = -1;
         let activeTriggerElement = null;
 
-        // Mobile touch swipe tracking variables
+        // Mobile touch swipe tracking
         let touchStartX = 0;
         let touchEndX = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             renderGallery();
 
-            // Keyboard navigation & modal shortcuts
+            // Keyboard navigation & shortcuts
             document.addEventListener('keydown', (e) => {
                 const lb = document.getElementById('lightbox');
                 if (!lb.classList.contains('hidden')) {
@@ -506,7 +496,7 @@
                 if (e.target === lbModal) closeLightbox();
             });
 
-            // Touch swipe handlers for lightbox
+            // Touch swipe handlers
             lbModal.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
             }, { passive: true });
@@ -520,9 +510,9 @@
         function handleSwipe() {
             const threshold = 40;
             if (touchEndX < touchStartX - threshold) {
-                navigateLightbox(1); // Swipe left -> Next photo
+                navigateLightbox(1);  // Swipe left -> next
             } else if (touchEndX > touchStartX + threshold) {
-                navigateLightbox(-1); // Swipe right -> Prev photo
+                navigateLightbox(-1); // Swipe right -> prev
             }
         }
 
@@ -554,21 +544,12 @@
 
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
-            const resultText = document.getElementById('result-text');
 
             filteredMemories = MEMORIES.filter(item => {
                 return (currentCategory === 'All') || (item.category === currentCategory);
             });
 
-            // Update dynamic result indicator
-            const totalCount = filteredMemories.length;
-            if (currentCategory === 'All') {
-                resultText.textContent = `Showing ${totalCount} photographs`;
-            } else {
-                resultText.textContent = `Showing ${totalCount} photograph${totalCount === 1 ? '' : 's'} in ${currentCategory}`;
-            }
-
-            if (totalCount === 0) {
+            if (filteredMemories.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full py-16 text-center space-y-3">
                         <div class="w-12 h-12 rounded-2xl bg-white mx-auto flex items-center justify-center text-zinc-400 shadow-sm">
@@ -582,7 +563,7 @@
 
             grid.innerHTML = filteredMemories.map((item, idx) => {
                 const aspectClass = ASPECT_RATIOS[idx % ASPECT_RATIOS.length];
-                const staggerDelay = (idx * 45) + 'ms';
+                const staggerDelay = (idx * 40) + 'ms';
                 return `
                 <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-stagger-card flex flex-col justify-between" 
                          style="animation-delay: ${staggerDelay};"
@@ -632,15 +613,23 @@
             if (!item) return;
 
             const imgEl = document.getElementById('lb-image');
-            imgEl.classList.remove('lb-img-swap', 'lb-slide-next', 'lb-slide-prev');
-            void imgEl.offsetWidth; // Trigger reflow
+            const panelEl = document.getElementById('lb-details-panel');
+
+            // Apply direction-aware horizontal slide animations
+            imgEl.classList.remove('lb-fade-swap', 'lb-slide-right', 'lb-slide-left');
+            panelEl.classList.remove('lb-fade-swap', 'lb-slide-right', 'lb-slide-left');
             
+            void imgEl.offsetWidth; // Force CSS animation reflow
+
             if (dir > 0) {
-                imgEl.classList.add('lb-slide-next');
+                imgEl.classList.add('lb-slide-right');
+                panelEl.classList.add('lb-slide-right');
             } else if (dir < 0) {
-                imgEl.classList.add('lb-slide-prev');
+                imgEl.classList.add('lb-slide-left');
+                panelEl.classList.add('lb-slide-left');
             } else {
-                imgEl.classList.add('lb-img-swap');
+                imgEl.classList.add('lb-fade-swap');
+                panelEl.classList.add('lb-fade-swap');
             }
 
             imgEl.onerror = function() {
@@ -649,21 +638,17 @@
             };
             imgEl.src = item.imageUrl;
             imgEl.alt = item.title;
+            
             document.getElementById('lb-date').textContent = item.date;
             document.getElementById('lb-category-pill').innerHTML = `${CATEGORY_ICONS[item.category] || ''} ${escapeHtml(item.category)}`;
             document.getElementById('lb-title').textContent = item.title;
             document.getElementById('lb-description').textContent = item.description;
-            
-            // Photo position counter
-            document.getElementById('lb-counter').textContent = `${idx + 1} / ${filteredMemories.length}`;
 
-            // Preload next & previous images for instant navigation
             preloadNeighborImages(idx);
 
             const lbModal = document.getElementById('lightbox');
             lbModal.classList.remove('hidden');
             
-            // Body scroll lock
             document.body.style.overflow = 'hidden';
         }
 
@@ -671,10 +656,8 @@
             const lbModal = document.getElementById('lightbox');
             lbModal.classList.add('hidden');
             
-            // Restore body scroll
             document.body.style.overflow = '';
 
-            // Restore focus to trigger card
             if (activeTriggerElement) {
                 activeTriggerElement.focus();
                 activeTriggerElement = null;

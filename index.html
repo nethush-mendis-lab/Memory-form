@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Link — Digital Family Storybook & Memory Vault</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            50: '#FDFBF7',
+                            100: '#FAF6ED',
+                            200: '#F3ECE0',
+                            300: '#E8DDCB',
+                            400: '#D9C8AF'
+                        },
+                        sage: {
+                            50: '#F4F7F4',
+                            100: '#E3ECE3',
+                            200: '#C5D8C5',
+                            500: '#6A8E6A',
+                            600: '#527252',
+                            700: '#3D563D',
+                            800: '#2A3C2A'
+                        },
+                        gold: {
+                            400: '#E5C158',
+                            500: '#D4AF37',
+                            600: '#B89320',
+                            700: '#947414'
+                        },
+                        slate: {
+                            800: '#2C3E35',
+                            900: '#1C2B24'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbars & smooth aesthetic details */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF6ED;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5D8C5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6A8E6A;
+        }
+        
+        .hero-pattern {
+            background-color: #FAF6ED;
+            background-image: radial-gradient(#D4AF37 0.75px, transparent 0.75px), radial-gradient(#6A8E6A 0.75px, #FAF6ED 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            background-opacity: 0.15;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-modal, #printable-modal * {
+                visibility: visible;
+            }
+            #printable-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-cream-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-gold-500 selection:text-white">
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-40 bg-cream-100/90 backdrop-blur-md border-b border-cream-300 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-sage-600 flex items-center justify-center text-cream-50 shadow-md group-hover:bg-gold-500 transition-colors duration-300">
+                    <i class="fa-solid font-serif text-xl font-bold">M</i>
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-slate-900 group-hover:text-sage-700 transition-colors">Memory Link</span>
+                    <span class="block text-xs text-sage-600 font-medium tracking-widest uppercase">Family Storybook</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-800">
+                <a href="#hero" class="hover:text-sage-600 transition-colors">Home</a>
+                <a href="#feed" class="hover:text-sage-600 transition-colors">Memory Vault</a>
+                <a href="#add-memory" class="hover:text-sage-600 transition-colors">Record a Story</a>
+                <a href="#about" class="hover:text-sage-600 transition-colors">About</a>
+            </nav>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="exportMemoriesJSON()" class="hidden sm:inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-800 hover:text-sage-700 bg-cream-200 hover:bg-cream-300 rounded-lg transition-colors" title="Export all memories as JSON backup">
+                    <i class="fa-solid fa-download"></i> Backup Vault
+                </button>
+                <a href="#add-memory" class="inline-flex items-center gap-2 px-4 py-2.5 bg-sage-600 hover:bg-sage-700 text-cream-50 font-medium text-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                    <span>Share Memory</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section id="hero" class="relative hero-pattern pt-16 pb-20 md:pt-24 md:pb-28 border-b border-cream-300 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Hero Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 border border-gold-400/40 text-sage-800 text-xs font-semibold tracking-wide uppercase shadow-sm">
+                        <i class="fa-solid fa-heart text-gold-500"></i> Preserving Family Legacy & Heritage
+                    </div>
+                    
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                        Keep Your Family’s <span class="italic text-sage-600 underline decoration-gold-500/50 decoration-wavy decoration-1">Precious Stories</span> Alive Forever.
+                    </h1>
+                    
+                    <p class="text-base sm:text-lg text-slate-800 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Memory Link is a digital storybook created to capture everyday moments, childhood memories, family traditions, and timeless words of wisdom from parents & grandparents before they fade.
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#add-memory" class="w-full sm:w-auto px-7 py-3.5 bg-gold-500 hover:bg-gold-600 text-slate-900 font-semibold rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-feather-pointed"></i> Record a Memory Now
+                        </a>
+                        <a href="#feed" class="w-full sm:w-auto px-7 py-3.5 bg-cream-100 hover:bg-cream-200 border border-cream-300 text-slate-800 font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-book-open text-sage-600"></i> Explore Story Vault
+                        </a>
+                    </div>
+
+                    <!-- Key Stats Counter -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-cream-300/80 max-w-md mx-auto lg:mx-0">
+                        <div>
+                            <span id="stat-count" class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">0</span>
+                            <span class="text-xs text-slate-800 font-medium">Stories Saved</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">100%</span>
+                            <span class="text-xs text-slate-800 font-medium">Private & Safe</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">∞</span>
+                            <span class="text-xs text-slate-800 font-medium">Generations</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Image Visual Frame -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-sm sm:max-w-md lg:max-w-none">
+                        <!-- Decorative Frame background -->
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-gold-500/30 to-sage-500/30 rounded-3xl transform -rotate-2 blur-sm"></div>
+                        
+                        <div class="relative bg-white p-4 rounded-2xl shadow-xl border border-cream-300">
+                            <div class="aspect-[4/3] overflow-hidden rounded-xl bg-cream-200 relative">
+                                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1000&q=80" 
+                                     alt="Grandparents sharing a story with grandchildren" 
+                                     class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-4">
+                                    <blockquote class="text-cream-50 italic text-sm font-serif">
+                                        "Stories are the threads that bind generations together."
+                                    </blockquote>
+                                </div>
+                            </div>
+                            
+                            <!-- Floating Card Badge -->
+                            <div class="mt-4 p-3 bg-cream-100 rounded-xl border border-gold-400/30 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-700 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-quote-left"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <p class="font-bold text-slate-800">Words of Wisdom</p>
+                                    <p class="text-slate-800 italic">"Always leave room at the table for one more..."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <!-- SECTION 1: SUBMISSION FORM -->
+        <section id="add-memory" class="scroll-mt-24">
+            <div class="max-w-3xl mx-auto">
+                
+                <div class="text-center mb-8">
+                    <span class="text-sage-600 font-semibold text-xs uppercase tracking-widest block mb-2">Create & Preserve</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Add a Family Memory</h2>
+                    <p class="text-slate-800 mt-2 text-sm sm:text-base">Record a memory about your parents, grandparents, or your own childhood to keep for future generations.</p>
+                </div>
+
+                <!-- Memory Form Card -->
+                <form id="memory-form" onsubmit="handleFormSubmit(event)" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-cream-300 space-y-6">
+                    
+                    <!-- Title Input -->
+                    <div>
+                        <label for="memory-title" class="block text-sm font-bold text-slate-800 mb-2">
+                            Memory Title <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="memory-title" required placeholder="e.g. Dad's First Beetle Car in 1978 or Grandma's Sunday Sauce" 
+                               class="w-full px-4 py-3 rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all text-sm">
+                    </div>
+
+                    <!-- Storyteller & Relationship Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="storyteller-name" class="block text-sm font-bold text-slate-800 mb-2">
+                                Storyteller / Subject <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="storyteller-name" required placeholder="e.g. Grandma Helen or Dad (Robert)" 
+                                   class="w-full px-4 py-3 rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all text-sm">
+                        </div>
+
+                        <div>
+                            <label for="date-period" class="block text-sm font-bold text-slate-800 mb-2">
+                                Year / Time Period <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="date-period" required placeholder="e.g. Summer 1984 or Circa 1965" 
+                                   class="w-full px-4 py-3 rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Category Pills selection -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-800 mb-2">
+                            Category <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="flex flex-wrap gap-2" id="category-selector">
+                            <button type="button" onclick="selectCategory('Family Tradition')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold border border-cream-300 bg-cream-100 text-slate-700 hover:bg-sage-100 transition-all active" data-value="Family Tradition">
+                                <i class="fa-solid fa-dharmachakra mr-1 text-sage-600"></i> Family Tradition
+                            </button>
+                            <button type="button" onclick="selectCategory('Childhood Memory')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold border border-cream-300 bg-cream-100 text-slate-700 hover:bg-sage-100 transition-all" data-value="Childhood Memory">
+                                <i class="fa-solid fa-child-reaching mr-1 text-gold-600"></i> Childhood
+                            </button>
+                            <button type="button" onclick="selectCategory('Words of Wisdom')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold border border-cream-300 bg-cream-100 text-slate-700 hover:bg-sage-100 transition-all" data-value="Words of Wisdom">
+                                <i class="fa-solid fa-lightbulb mr-1 text-amber-500"></i> Words of Wisdom
+                            </button>
+                            <button type="button" onclick="selectCategory('Major Milestone')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold border border-cream-300 bg-cream-100 text-slate-700 hover:bg-sage-100 transition-all" data-value="Major Milestone">
+                                <i class="fa-solid fa-star mr-1 text-gold-500"></i> Major Milestone
+                            </button>
+                            <button type="button" onclick="selectCategory('Recipe & Feast')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold border border-cream-300 bg-cream-100 text-slate-700 hover:bg-sage-100 transition-all" data-value="Recipe & Feast">
+                                <i class="fa-solid fa-utensils mr-1 text-rose-500"></i> Recipe & Feast
+                            </button>
+                        </div>
+                        <input type="hidden" id="selected-category" value="Family Tradition" required>
+                    </div>
+
+                    <!-- Story Textarea -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="story-text" class="block text-sm font-bold text-slate-800">
+                                The Story / Memory Details <span class="text-rose-500">*</span>
+                            </label>
+                            <span class="text-xs text-slate-800">Prompt: What made this moment unforgettable?</span>
+                        </div>
+                        <textarea id="story-text" rows="5" required placeholder="Write the story here... Include laughter, sights, sounds, or life lessons passed down." 
+                                  class="w-full px-4 py-3 rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all text-sm leading-relaxed"></textarea>
+                    </div>
+
+                    <!-- Photo Upload / URL Section -->
+                    <div class="border-t border-cream-200 pt-6 space-y-4">
+                        <label class="block text-sm font-bold text-slate-800">
+                            Add a Photo / Keepsake Image
+                        </label>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Image URL input -->
+                            <div>
+                                <input type="url" id="photo-url" oninput="previewImageUrl(this.value)" placeholder="Paste image link URL (http://...)" 
+                                       class="w-full px-4 py-2.5 rounded-xl border border-cream-300 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sage-600 text-xs">
+                                <p class="text-[11px] text-slate-800 mt-1">Or upload an image file from your device below.</p>
+                            </div>
+
+                            <!-- File upload dropzone -->
+                            <div>
+                                <label class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-cream-300 rounded-xl cursor-pointer hover:border-sage-500 bg-cream-50 hover:bg-sage-50/50 transition-all">
+                                    <div class="flex items-center gap-2 text-xs text-slate-800 font-semibold">
+                                        <i class="fa-solid fa-cloud-arrow-up text-sage-600 text-base"></i>
+                                        <span>Choose Photo File</span>
+                                    </div>
+                                    <input type="file" id="photo-file" accept="image/*" onchange="handleFileUpload(event)" class="hidden">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Image Preview Box -->
+                        <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden max-h-48 bg-cream-100 border border-cream-300">
+                            <img id="image-preview" src="" alt="Photo preview" class="w-full h-48 object-cover">
+                            <button type="button" onclick="removeImagePreview()" class="absolute top-2 right-2 bg-slate-900/70 hover:bg-rose-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs transition-colors">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tags & Audio Prompt Optional -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="memory-location" class="block text-xs font-bold text-slate-800 mb-1">Location (Optional)</label>
+                            <input type="text" id="memory-location" placeholder="e.g. Seattle, WA or The Old Farmhouse" class="w-full px-3 py-2 rounded-lg border border-cream-300 bg-cream-50 text-xs">
+                        </div>
+                        <div>
+                            <label for="memory-tags" class="block text-xs font-bold text-slate-800 mb-1">Tags (Comma separated)</label>
+                            <input type="text" id="memory-tags" placeholder="e.g. Holidays, Summer, Laughter" class="w-full px-3 py-2 rounded-lg border border-cream-300 bg-cream-50 text-xs">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4 flex items-center justify-end gap-4">
+                        <button type="reset" onclick="resetFormState()" class="px-5 py-3 rounded-xl border border-cream-300 text-xs font-semibold text-slate-800 hover:bg-cream-200 transition-colors">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="px-8 py-3 bg-sage-600 hover:bg-sage-700 text-cream-50 font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-bookmark"></i> Save to Vault
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: MEMORY VAULT & FEED -->
+        <section id="feed" class="scroll-mt-24 space-y-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cream-300 pb-6">
+                <div>
+                    <span class="text-sage-600 font-semibold text-xs uppercase tracking-widest block mb-1">Digital Storybook</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900">The Family Memory Vault</h2>
+                </div>
+                
+                <!-- Search & Filters Container -->
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <!-- Search Bar -->
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-800 text-xs"></i>
+                        <input type="text" id="search-input" oninput="filterMemories()" placeholder="Search stories, names, tags..." 
+                               class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-cream-300 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-sage-600 shadow-sm">
+                    </div>
+
+                    <!-- Sort Selection -->
+                    <select id="sort-select" onchange="filterMemories()" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-cream-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sage-600 shadow-sm">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="popular">Most Loved</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Category Filter Buttons -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="filter-pills">
+                <button onclick="setFilterCategory('ALL')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-sage-600 text-white shadow-sm transition-all shrink-0 active" data-cat="ALL">
+                    All Stories (<span id="count-all">0</span>)
+                </button>
+                <button onclick="setFilterCategory('Family Tradition')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-cream-200 text-slate-800 hover:bg-sage-100 transition-all shrink-0" data-cat="Family Tradition">
+                    Family Traditions
+                </button>
+                <button onclick="setFilterCategory('Childhood Memory')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-cream-200 text-slate-800 hover:bg-sage-100 transition-all shrink-0" data-cat="Childhood Memory">
+                    Childhood
+                </button>
+                <button onclick="setFilterCategory('Words of Wisdom')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-cream-200 text-slate-800 hover:bg-sage-100 transition-all shrink-0" data-cat="Words of Wisdom">
+                    Words of Wisdom
+                </button>
+                <button onclick="setFilterCategory('Major Milestone')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-cream-200 text-slate-800 hover:bg-sage-100 transition-all shrink-0" data-cat="Major Milestone">
+                    Milestones
+                </button>
+                <button onclick="setFilterCategory('Recipe & Feast')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-cream-200 text-slate-800 hover:bg-sage-100 transition-all shrink-0" data-cat="Recipe & Feast">
+                    Recipes & Feasts
+                </button>
+            </div>
+
+            <!-- Dynamic Memory Grid Container -->
+            <div id="memory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Cards injected dynamically via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-cream-300 p-8">
+                <div class="w-16 h-16 bg-cream-200 text-sage-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-slate-900">No memories found</h3>
+                <p class="text-xs text-slate-800 mt-1 max-w-sm mx-auto">Try adjusting your search query or category filters, or be the first to record a new story!</p>
+                <a href="#add-memory" class="inline-block mt-4 px-5 py-2.5 bg-sage-600 text-white rounded-xl text-xs font-bold shadow hover:bg-sage-700 transition-colors">
+                    Add First Memory
+                </a>
+            </div>
+
+        </section>
+
+        <!-- SECTION 3: ABOUT MEMORY LINK -->
+        <section id="about" class="scroll-mt-24 bg-sage-800 text-cream-50 rounded-3xl p-8 sm:p-14 shadow-2xl relative overflow-hidden">
+            <!-- Decorative Accent -->
+            <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-sage-700/50 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="max-w-3xl mx-auto space-y-8 relative z-10">
+                <div class="text-center space-y-3">
+                    <span class="text-gold-400 font-semibold text-xs uppercase tracking-widest">Our Heritage Purpose</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold">Why Memory Link Exists</h2>
+                    <div class="w-16 h-1 bg-gold-500 mx-auto rounded-full"></div>
+                </div>
+
+                <p class="text-cream-100 text-base sm:text-lg leading-relaxed text-center">
+                    Every family is built on stories—the quiet advice spoken over coffee, the hilarious road trip mishaps, the cherished holiday recipes, and the lessons earned through hard times. Too often, these memories remain trapped in old photobooks or fade as generations grow.
+                </p>
+
+                <!-- Who It's For Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+                    <div class="bg-sage-700/60 p-6 rounded-2xl border border-sage-600/50 space-y-2">
+                        <div class="text-gold-400 text-xl"><i class="fa-solid fa-users"></i></div>
+                        <h3 class="font-serif text-lg font-bold">For Parents & Grandparents</h3>
+                        <p class="text-xs text-cream-200 leading-relaxed">
+                            A respectful, cozy place to share their life experiences, hard-earned wisdom, and childhood recollections in their own words.
+                        </p>
+                    </div>
+
+                    <div class="bg-sage-700/60 p-6 rounded-2xl border border-sage-600/50 space-y-2">
+                        <div class="text-gold-400 text-xl"><i class="fa-solid fa-seedling"></i></div>
+                        <h3 class="font-serif text-lg font-bold">For Children & Future Generations</h3>
+                        <p class="text-xs text-cream-200 leading-relaxed">
+                            An immutable digital heirloom to help children discover where they come from and feel connected to their roots.
+                        </p>
+                    </div>
+
+                    <div class="bg-sage-700/60 p-6 rounded-2xl border border-sage-600/50 space-y-2">
+                        <div class="text-gold-400 text-xl"><i class="fa-solid fa-heart font-bold"></i></div>
+                        <h3 class="font-serif text-lg font-bold">For Family Traditions</h3>
+                        <p class="text-xs text-cream-200 leading-relaxed">
+                            Preserve secret cooking methods, annual holiday rituals, and peculiar family humor so they never die out.
+                        </p>
+                    </div>
+
+                    <div class="bg-sage-700/60 p-6 rounded-2xl border border-sage-600/50 space-y-2">
+                        <div class="text-gold-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-serif text-lg font-bold">Safe & Private</h3>
+                        <p class="text-xs text-cream-200 leading-relaxed">
+                            Stored safely in your web browser with simple one-click JSON backup tools so your family retains full control of your archive.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center pt-6">
+                    <blockquote class="italic font-serif text-lg text-gold-300">
+                        "In the end, we are all stories. Memory Link makes sure yours is never forgotten."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-cream-200 border-t border-cream-300 mt-20 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-sage-600 text-cream-50 flex items-center justify-center font-serif font-bold text-sm">M</div>
+                <span class="font-serif font-bold text-slate-900">Memory Link — Personal Storybook</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-xs font-medium text-slate-800">
+                <button onclick="exportMemoriesJSON()" class="hover:text-sage-700 underline"><i class="fa-solid fa-file-export mr-1"></i> Export Data</button>
+                <label class="hover:text-sage-700 underline cursor-pointer">
+                    <i class="fa-solid fa-file-import mr-1"></i> Import Backup
+                    <input type="file" id="import-file" accept=".json" onchange="importMemoriesJSON(event)" class="hidden">
+                </label>
+                <a href="#hero" class="hover:text-sage-700">Back to top ↑</a>
+            </div>
+
+            <p class="text-xs text-slate-800">Designed with warmth & care for families everywhere.</p>
+        </div>
+    </footer>
+
+    <!-- ================= STORY DETAIL MODAL ================= -->
+    <div id="story-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-cream-300 relative transform transition-all duration-300 scale-95 opacity-0" id="modal-card">
+            
+            <!-- Modal Header / Image -->
+            <div class="relative h-64 sm:h-80 bg-cream-200">
+                <img id="modal-image" src="" alt="Memory visual" class="w-full h-full object-cover">
+                <button onclick="closeStoryModal()" class="absolute top-4 right-4 bg-slate-900/70 hover:bg-slate-900 text-white rounded-full w-9 h-9 flex items-center justify-center text-sm shadow-lg transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="absolute bottom-4 left-4 bg-sage-700/90 backdrop-blur-md text-cream-50 text-xs px-3 py-1.5 rounded-full font-semibold" id="modal-category">
+                    Category
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 sm:p-8 space-y-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs text-slate-800 font-semibold mb-1">
+                        <span id="modal-storyteller"><i class="fa-solid fa-user text-sage-600 mr-1"></i> Storyteller</span>
+                        <span>•</span>
+                        <span id="modal-date"><i class="fa-solid fa-calendar text-gold-600 mr-1"></i> Date</span>
+                        <span id="modal-location-container" class="hidden">
+                            <span>•</span>
+                            <span id="modal-location"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> Location</span>
+                        </span>
+                    </div>
+                    
+                    <h2 id="modal-title" class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Story Title</h2>
+                </div>
+
+                <!-- Story Text -->
+                <div class="prose prose-slate max-w-none text-slate-800 text-base leading-relaxed space-y-4 font-normal" id="modal-body">
+                    <!-- Text inserted dynamically -->
+                </div>
+
+                <!-- Tags list -->
+                <div id="modal-tags" class="flex flex-wrap gap-2 pt-2 border-t border-cream-200">
+                    <!-- Tags dynamic -->
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-cream-300">
+                    <div class="flex items-center gap-3">
+                        <button id="modal-like-btn" onclick="toggleModalLike()" class="px-4 py-2 rounded-xl bg-cream-100 hover:bg-rose-50 border border-cream-300 text-rose-600 font-bold text-xs flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-heart"></i> <span id="modal-like-count">0</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-cream-200 hover:bg-cream-300 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors">
+                            <i class="fa-solid fa-print"></i> Print Card
+                        </button>
+                        <button onclick="closeStoryModal()" class="px-5 py-2 rounded-xl bg-sage-600 text-white text-xs font-semibold hover:bg-sage-700 transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Storage Key & State Management
+        const STORAGE_KEY = 'memory_link_items_v1';
+        let memories = [];
+        let currentFilterCategory = 'ALL';
+        let currentSearchQuery = '';
+        let activeModalMemoryId = null;
+
+        // Sample initial family stories
+        const INITIAL_MEMORIES = [
+            {
+                id: 'mem-1',
+                title: "The 1978 Volkswagen Beetle Road Trip to Yellowstone",
+                storyteller: "Dad (Robert Sterling)",
+                datePeriod: "July 1978",
+                category: "Childhood Memory",
+                location: "Yellowstone National Park",
+                story: "We piled all four kids into the back of Dad's mustard-yellow Beetle with no air conditioning. Every time the engine sputtered up the mountain passes, we all had to lean forward to 'help it push.' Mom packed hard-boiled eggs and warm ginger ale in a red tartan cooler. We didn't have GPS or cell phones, but we had two decks of cards, singing along to Credence Clearwater Revival on the 8-track player, and endless laughter.",
+                photoUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+                tags: ["RoadTrip", "Summer", "Vintage"],
+                likes: 12,
+                createdAt: Date.now() - 1000000
+            },
+            {
+                id: 'mem-2',
+                title: "Nonna Maria's Wooden Spoon Sauce Rule",
+                storyteller: "Grandma Maria",
+                datePeriod: "Sundays Since 1965",
+                category: "Family Tradition",
+                location: "Brooklyn, NY",
+                story: "Nonna always swore that a metal spoon would 'steal the sweetness' from San Marzano tomatoes. Every Sunday morning at 6:00 AM sharp, the house filled with garlic, crushed basil, and slow-simmering pork ribs. If anyone tried to stir the pot with a stainless steel spoon, Nonna would gently tap their hand with her wooden spoon. That wooden spoon was smoothed down by forty years of love and family dinners.",
+                photoUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+                tags: ["Recipe", "SundayDinner", "Nonna"],
+                likes: 24,
+                createdAt: Date.now() - 500000
+            },
+            {
+                id: 'mem-3',
+                title: "Always Leave the Campfire Cleaner Than You Found It",
+                storyteller: "Grandpa Joe",
+                datePeriod: "Fall 1994",
+                category: "Words of Wisdom",
+                location: "Lake Tahoe, CA",
+                story: "We were sitting by the dying embers of our campfire after catching three trout. Grandpa turned to me, dusted off his hands, and said: 'Kiddo, this isn't just about pine needles and campsites. In life, wherever you go—a job, a friendship, a marriage—always leave it a little cleaner, warmer, and better than you found it.' I've carried those words with me into every room I've entered since.",
+                photoUrl: "https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=800&q=80",
+                tags: ["Wisdom", "Camping", "Grandpa"],
+                likes: 18,
+                createdAt: Date.now() - 200000
+            },
+            {
+                id: 'mem-4',
+                title: "Mom & Dad's First Date Chocolate Milkshake Spill",
+                storyteller: "Mom & Dad",
+                datePeriod: "October 14, 1972",
+                category: "Major Milestone",
+                location: "Corner Soda Fountain",
+                story: "Dad was so nervous when he met Mom at the soda fountain after Friday night football. Within five minutes of sitting down in his best flannel shirt, he gestured wildly while telling a joke and knocked an entire double-chocolate malt into Mom's lap! Instead of getting upset, Mom started laughing so hard she spilled her own water. Dad says that was the moment he knew he was going to marry her.",
+                photoUrl: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
+                tags: ["LoveStory", "FirstDate", "1970s"],
+                likes: 31,
+                createdAt: Date.now() - 100000
+            }
+        ];
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            loadMemories();
+            renderFeed();
+            updateStats();
+        });
+
+        // Local Storage Handling
+        function loadMemories() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    memories = JSON.parse(stored);
+                } catch(e) {
+                    console.error('Failed to parse local storage', e);
+                    memories = [...INITIAL_MEMORIES];
+                }
+            } else {
+                memories = [...INITIAL_MEMORIES];
+                saveMemories();
+            }
+        }
+
+        function saveMemories() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(memories));
+            updateStats();
+        }
+
+        function updateStats() {
+            const countEl = document.getElementById('stat-count');
+            const countAllEl = document.getElementById('count-all');
+            if (countEl) countEl.textContent = memories.length;
+            if (countAllEl) countAllEl.textContent = memories.length;
+        }
+
+        // Category Form Selection
+        function selectCategory(categoryName) {
+            document.getElementById('selected-category').value = categoryName;
+            const buttons = document.querySelectorAll('#category-selector .cat-pill');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-value') === categoryName) {
+                    btn.classList.add('bg-sage-600', 'text-white', 'border-sage-600');
+                    btn.classList.remove('bg-cream-100', 'text-slate-700');
+                } else {
+                    btn.classList.remove('bg-sage-600', 'text-white', 'border-sage-600');
+                    btn.classList.add('bg-cream-100', 'text-slate-700');
+                }
+            });
+        }
+
+        // Image Handling (URL preview & file upload)
+        let currentUploadedImageData = '';
+
+        function previewImageUrl(url) {
+            const container = document.getElementById('image-preview-container');
+            const preview = document.getElementById('image-preview');
+            if (url && url.trim() !== '') {
+                preview.src = url;
+                container.classList.remove('hidden');
+                currentUploadedImageData = url;
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Please select an image smaller than 5MB', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentUploadedImageData = e.target.result;
+                const container = document.getElementById('image-preview-container');
+                const preview = document.getElementById('image-preview');
+                preview.src = currentUploadedImageData;
+                container.classList.remove('hidden');
+                document.getElementById('photo-url').value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImagePreview() {
+            currentUploadedImageData = '';
+            document.getElementById('photo-url').value = '';
+            document.getElementById('photo-file').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('memory-title').value.trim();
+            const storyteller = document.getElementById('storyteller-name').value.trim();
+            const datePeriod = document.getElementById('date-period').value.trim();
+            const category = document.getElementById('selected-category').value;
+            const story = document.getElementById('story-text').value.trim();
+            const location = document.getElementById('memory-location').value.trim();
+            const rawTags = document.getElementById('memory-tags').value.trim();
+
+            const tags = rawTags ? rawTags.split(',').map(t => t.trim().replace(/^#/, '')) : [];
+
+            // Default image if none provided
+            const photoUrl = currentUploadedImageData || 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80';
+
+            const newMemory = {
+                id: 'mem-' + Date.now(),
+                title,
+                storyteller,
+                datePeriod,
+                category,
+                story,
+                location,
+                photoUrl,
+                tags,
+                likes: 0,
+                createdAt: Date.now()
+            };
+
+            memories.unshift(newMemory);
+            saveMemories();
+            renderFeed();
+
+            // Reset Form & show Toast
+            resetFormState();
+            showToast('Memory successfully recorded to vault!', 'success');
+
+            // Scroll smoothly to feed
+            document.getElementById('feed').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetFormState() {
+            document.getElementById('memory-form').reset();
+            removeImagePreview();
+            selectCategory('Family Tradition');
+        }
+
+        // Category Filtering & Search
+        function setFilterCategory(cat) {
+            currentFilterCategory = cat;
+            
+            // Highlight active filter pill
+            const pills = document.querySelectorAll('#filter-pills .filter-btn');
+            pills.forEach(pill => {
+                if (pill.getAttribute('data-cat') === cat) {
+                    pill.classList.add('bg-sage-600', 'text-white');
+                    pill.classList.remove('bg-cream-200', 'text-slate-800');
+                } else {
+                    pill.classList.remove('bg-sage-600', 'text-white');
+                    pill.classList.add('bg-cream-200', 'text-slate-800');
+                }
+            });
+
+            renderFeed();
+        }
+
+        function filterMemories() {
+            currentSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            renderFeed();
+        }
+
+        // Render Memory Feed Cards
+        function renderFeed() {
+            const grid = document.getElementById('memory-grid');
+            const emptyState = document.getElementById('empty-state');
+            const sortVal = document.getElementById('sort-select').value;
+
+            // Filter logic
+            let filtered = memories.filter(item => {
+                const matchesCategory = (currentFilterCategory === 'ALL') || (item.category === currentFilterCategory);
+                const matchesSearch = !currentSearchQuery || 
+                    item.title.toLowerCase().includes(currentSearchQuery) ||
+                    item.storyteller.toLowerCase().includes(currentSearchQuery) ||
+                    item.story.toLowerCase().includes(currentSearchQuery) ||
+                    (item.tags && item.tags.some(t => t.toLowerCase().includes(currentSearchQuery)));
+
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sorting logic
+            if (sortVal === 'newest') {
+                filtered.sort((a, b) => b.createdAt - a.createdAt);
+            } else if (sortVal === 'oldest') {
+                filtered.sort((a, b) => a.createdAt - b.createdAt);
+            } else if (sortVal === 'popular') {
+                filtered.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            // Generate HTML Cards
+            grid.innerHTML = filtered.map(item => {
+                const categoryColorClass = getCategoryBadgeClass(item.category);
+                const shortStory = item.story.length > 140 ? item.story.substring(0, 140) + '...' : item.story;
+
+                return `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-cream-300 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        
+                        <!-- Card Photo Banner -->
+                        <div class="relative h-48 bg-cream-200 overflow-hidden cursor-pointer" onclick="openStoryModal('${item.id}')">
+                            <img src="${escapeHtml(item.photoUrl)}" alt="${escapeHtml(item.title)}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80'">
+                            <div class="absolute top-3 left-3">
+                                <span class="px-3 py-1 rounded-full text-[11px] font-bold shadow-md ${categoryColorClass}">
+                                    ${escapeHtml(item.category)}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-xs text-slate-800 font-semibold mb-2">
+                                    <span><i class="fa-solid fa-user text-sage-600 mr-1"></i> ${escapeHtml(item.storyteller)}</span>
+                                    <span><i class="fa-solid fa-calendar text-gold-600 mr-1"></i> ${escapeHtml(item.datePeriod)}</span>
+                                </div>
+
+                                <h3 onclick="openStoryModal('${item.id}')" class="font-serif text-xl font-bold text-slate-900 group-hover:text-sage-700 transition-colors cursor-pointer leading-snug">
+                                    ${escapeHtml(item.title)}
+                                </h3>
+
+                                <p class="text-xs text-slate-800 mt-2.5 leading-relaxed font-normal">
+                                    "${escapeHtml(shortStory)}"
+                                </p>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="pt-4 border-t border-cream-200 flex items-center justify-between">
+                                <button onclick="likeMemory('${item.id}')" class="flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 transition-colors bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span>${item.likes || 0}</span>
+                                </button>
+
+                                <div class="flex items-center gap-2">
+                                    <button onclick="deleteMemory('${item.id}')" class="text-slate-800 hover:text-rose-600 text-xs p-1.5 transition-colors" title="Delete memory">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <button onclick="openStoryModal('${item.id}')" class="px-3.5 py-1.5 bg-cream-200 hover:bg-sage-600 hover:text-white text-slate-800 font-bold text-xs rounded-xl transition-all">
+                                        Read Full Story
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Category Badge Styles Helper
+        function getCategoryBadgeClass(category) {
+            switch (category) {
+                case 'Family Tradition': return 'bg-sage-700 text-cream-50';
+                case 'Childhood Memory': return 'bg-gold-500 text-slate-900';
+                case 'Words of Wisdom': return 'bg-amber-600 text-cream-50';
+                case 'Major Milestone': return 'bg-purple-700 text-cream-50';
+                case 'Recipe & Feast': return 'bg-rose-600 text-cream-50';
+                default: return 'bg-slate-700 text-cream-50';
+            }
+        }
+
+        // Story Modal Logic
+        function openStoryModal(id) {
+            const memory = memories.find(m => m.id === id);
+            if (!memory) return;
+
+            activeModalMemoryId = id;
+
+            document.getElementById('modal-image').src = memory.photoUrl;
+            document.getElementById('modal-category').textContent = memory.category;
+            document.getElementById('modal-category').className = `absolute bottom-4 left-4 text-xs px-3 py-1.5 rounded-full font-semibold shadow-md ${getCategoryBadgeClass(memory.category)}`;
+            
+            document.getElementById('modal-storyteller').innerHTML = `<i class="fa-solid fa-user text-sage-600 mr-1"></i> ${escapeHtml(memory.storyteller)}`;
+            document.getElementById('modal-date').innerHTML = `<i class="fa-solid fa-calendar text-gold-600 mr-1"></i> ${escapeHtml(memory.datePeriod)}`;
+            
+            const locContainer = document.getElementById('modal-location-container');
+            if (memory.location) {
+                document.getElementById('modal-location').innerHTML = `<i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${escapeHtml(memory.location)}`;
+                locContainer.classList.remove('hidden');
+            } else {
+                locContainer.classList.add('hidden');
+            }
+
+            document.getElementById('modal-title').textContent = memory.title;
+            document.getElementById('modal-body').innerHTML = escapeHtml(memory.story).replace(/\n/g, '<br>');
+            document.getElementById('modal-like-count').textContent = memory.likes || 0;
+
+            // Render Tags
+            const tagsContainer = document.getElementById('modal-tags');
+            if (memory.tags && memory.tags.length > 0) {
+                tagsContainer.innerHTML = memory.tags.map(t => `<span class="px-2.5 py-1 bg-cream-200 text-slate-700 rounded-lg text-[11px] font-semibold">#${escapeHtml(t)}</span>`).join('');
+                tagsContainer.classList.remove('hidden');
+            } else {
+                tagsContainer.classList.add('hidden');
+            }
+
+            const modal = document.getElementById('story-modal');
+            const modalCard = document.getElementById('modal-card');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalCard.classList.remove('scale-95', 'opacity-0');
+                modalCard.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeStoryModal() {
+            const modal = document.getElementById('story-modal');
+            const modalCard = document.getElementById('modal-card');
+
+            modalCard.classList.remove('scale-100', 'opacity-100');
+            modalCard.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                activeModalMemoryId = null;
+            }, 200);
+        }
+
+        // Like / Heart Increment
+        function likeMemory(id) {
+            const memory = memories.find(m => m.id === id);
+            if (memory) {
+                memory.likes = (memory.likes || 0) + 1;
+                saveMemories();
+                renderFeed();
+                if (activeModalMemoryId === id) {
+                    document.getElementById('modal-like-count').textContent = memory.likes;
+                }
+            }
+        }
+
+        function toggleModalLike() {
+            if (activeModalMemoryId) {
+                likeMemory(activeModalMemoryId);
+            }
+        }
+
+        // Delete Memory Handler
+        function deleteMemory(id) {
+            const memory = memories.find(m => m.id === id);
+            if (!memory) return;
+
+            // Soft non-blocking confirmation dialog using custom toast/prompt element
+            const cardTitle = memory.title;
+            if (confirm(`Are you sure you want to delete "${cardTitle}"?`)) {
+                memories = memories.filter(m => m.id !== id);
+                saveMemories();
+                renderFeed();
+                showToast('Story removed from vault', 'info');
+            }
+        }
+
+        // Export & Import JSON Backup
+        function exportMemoriesJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memories, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `memory_link_backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('Backup JSON downloaded successfully!', 'success');
+        }
+
+        function importMemoriesJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        memories = imported;
+                        saveMemories();
+                        renderFeed();
+                        showToast(`Successfully imported ${imported.length} memories!`, 'success');
+                    } else {
+                        showToast('Invalid backup file format.', 'error');
+                    }
+                } catch(err) {
+                    showToast('Failed to parse backup JSON file.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const bgClass = type === 'success' ? 'bg-sage-800 text-cream-50 border-gold-500' : 'bg-slate-900 text-cream-50 border-rose-500';
+            const icon = type === 'success' ? 'fa-circle-check text-gold-400' : 'fa-circle-info text-rose-400';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border ${bgClass} text-xs font-semibold transform transition-all duration-300 translate-y-5 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i> <span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Utility: HTML Escaping
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+</body>
+</html>

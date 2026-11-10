@@ -8,6 +8,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
@@ -186,10 +188,22 @@
         /* Image Lazy Load Fade-In */
         .img-fade-in {
             opacity: 0;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .img-fade-in.loaded {
             opacity: 1;
+        }
+
+        /* Shimmer Skeleton Placeholder to prevent layout shifts */
+        .img-skeleton {
+            background-color: #EFEBE1;
+            background-image: linear-gradient(90deg, #EFEBE1 0%, #F4F0E6 50%, #EFEBE1 100%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.8s infinite ease-in-out;
+        }
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         /* Respect reduced motion preference */
@@ -224,8 +238,11 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-4 w-full z-10 relative">
         <div class="relative w-full rounded-3xl bg-white p-3 sm:p-4 shadow-sm hero-cover-container overflow-hidden">
             <div class="relative h-[260px] sm:h-[360px] md:h-[420px] w-full rounded-2xl overflow-hidden bg-linen-200">
-                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=2000&q=80" 
-                     alt="Cover photo" class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] hero-cover-img">
+                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1600&q=75" 
+                     alt="Cover photo" 
+                     fetchpriority="high"
+                     decoding="async"
+                     class="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] hero-cover-img">
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/20 to-transparent"></div>
 
@@ -493,6 +510,21 @@
         let touchStartX = 0;
         let touchEndX = 0;
 
+        // Image URL optimization helpers
+        function getThumbnailUrl(url) {
+            if (url.includes('images.unsplash.com')) {
+                return url.replace(/w=\d+/, 'w=640').replace(/q=\d+/, 'q=75');
+            }
+            return url;
+        }
+
+        function getFullResUrl(url) {
+            if (url.includes('images.unsplash.com')) {
+                return url.replace(/w=\d+/, 'w=1600').replace(/q=\d+/, 'q=85');
+            }
+            return url;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderGallery();
 
@@ -580,6 +612,11 @@
             grid.innerHTML = filteredMemories.map((item, idx) => {
                 const aspectClass = ASPECT_RATIOS[idx % ASPECT_RATIOS.length];
                 const staggerDelay = (idx * 40) + 'ms';
+                const isInitialFold = idx < 3;
+                const loadingAttr = isInitialFold ? 'eager' : 'lazy';
+                const priorityAttr = isInitialFold ? 'fetchpriority="high"' : 'fetchpriority="low"';
+                const thumbUrl = getThumbnailUrl(item.imageUrl);
+
                 return `
                 <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-stagger-card flex flex-col justify-between" 
                          style="animation-delay: ${staggerDelay};"
@@ -588,13 +625,14 @@
                          onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openLightbox(${idx}, this); }">
                     
                     <div>
-                        <div class="relative ${aspectClass} w-full overflow-hidden bg-linen-200">
-                            <img src="${item.imageUrl}" alt="${escapeHtml(item.title)}" 
+                        <div class="relative ${aspectClass} w-full overflow-hidden bg-linen-200 img-skeleton" id="card-img-wrap-${idx}">
+                            <img src="${thumbUrl}" alt="${escapeHtml(item.title)}" 
                                  class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] img-fade-in"
-                                 loading="lazy"
+                                 loading="${loadingAttr}"
+                                 ${priorityAttr}
                                  decoding="async"
-                                 onload="this.classList.add('loaded')"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/1200x800/E2DDCF/18181B?text=' + encodeURIComponent('${escapeHtml(item.title)}'); this.classList.add('loaded');">
+                                 onload="this.classList.add('loaded'); document.getElementById('card-img-wrap-${idx}')?.classList.remove('img-skeleton')"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/E2DDCF/18181B?text=' + encodeURIComponent('${escapeHtml(item.title)}'); this.classList.add('loaded'); document.getElementById('card-img-wrap-${idx}')?.classList.remove('img-skeleton')">
                             
                             <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 rounded-xl text-[11px] font-semibold flex items-center gap-1.5 shadow-sm transition-transform duration-200 group-hover:scale-105">
                                 ${CATEGORY_ICONS[item.category] || ''}
@@ -652,7 +690,7 @@
                 this.onerror = null;
                 this.src = 'https://placehold.co/1200x800/E2DDCF/18181B?text=' + encodeURIComponent(item.title);
             };
-            imgEl.src = item.imageUrl;
+            imgEl.src = getFullResUrl(item.imageUrl);
             imgEl.alt = item.title;
             
             document.getElementById('lb-date').textContent = item.date;
@@ -694,10 +732,10 @@
             const nextIdx = (idx + 1) % filteredMemories.length;
             
             const imgPrev = new Image();
-            imgPrev.src = filteredMemories[prevIdx].imageUrl;
+            imgPrev.src = getFullResUrl(filteredMemories[prevIdx].imageUrl);
             
             const imgNext = new Image();
-            imgNext.src = filteredMemories[nextIdx].imageUrl;
+            imgNext.src = getFullResUrl(filteredMemories[nextIdx].imageUrl);
         }
 
         function escapeHtml(str) {

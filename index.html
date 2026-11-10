@@ -384,15 +384,15 @@
 
         const ASPECT_RATIOS = ['aspect-[4/3]', 'aspect-[3/2]', 'aspect-[14/10]'];
 
-        // Verified High-Resolution Unsplash Family Memory Images
+        // Memory Archive Data
         const MEMORIES = [
             {
                 id: 'mem-1',
-                title: 'Kyoto Bamboo Path Stroll',
+                title: 'Kyoto Historic Walk',
                 date: 'April 2019',
                 category: 'Japan',
-                description: 'Walking through the quiet bamboo grove early in the morning before sunrise. The morning breeze moved gently through the tall green stalks.',
-                imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80'
+                description: 'Walking through quiet historic streets and serene grounds during the early morning.',
+                imageUrl: 'images/6D085654-DF3E-4D52-927A-E987A9494F7D.JPG'
             },
             {
                 id: 'mem-2',
@@ -428,11 +428,11 @@
             },
             {
                 id: 'mem-6',
-                title: 'Evening Lanterns in Asakusa',
+                title: 'Evening Lanterns & Architecture',
                 date: 'April 2019',
                 category: 'Japan',
-                description: 'Exploring the illuminated historic district after dark. Warm red lanterns lit up the traditional wooden storefronts and narrow alleys.',
-                imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80'
+                description: 'Exploring the illuminated historic district after dark. Warm red lanterns lit up traditional wooden storefronts.',
+                imageUrl: 'images/754EEA62-81C9-4868-8B02-D23D16EBCF50.JPG'
             },
             {
                 id: 'mem-7',
@@ -465,6 +465,22 @@
                 category: 'Family',
                 description: 'Walking through golden maple and aspen trees along the mountain ridge trail during the peak of foliage season.',
                 imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80'
+            },
+            {
+                id: 'mem-11',
+                title: 'Garden Bridges & Blossoms',
+                date: 'April 2019',
+                category: 'Japan',
+                description: 'Strolling across wooden bridges in peaceful Japanese gardens surrounded by spring greenery.',
+                imageUrl: 'images/C90E24E9-2677-422E-A8B7-8F1641F22481.JPG'
+            },
+            {
+                id: 'mem-12',
+                title: 'Mount Fuji Twilight View',
+                date: 'April 2019',
+                category: 'Japan',
+                description: 'Watching the twilight colors fade over Mount Fuji from the countryside overlook.',
+                imageUrl: 'images/FA08CF9C-A8C3-4AEA-AD39-E974743840B8.JPG'
             }
         ];
 
@@ -578,7 +594,7 @@
                                  loading="lazy"
                                  decoding="async"
                                  onload="this.classList.add('loaded')"
-                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80'; this.classList.add('loaded');">
+                                 onerror="this.onerror=null; this.src='https://placehold.co/1200x800/E2DDCF/18181B?text=' + encodeURIComponent('${escapeHtml(item.title)}'); this.classList.add('loaded');">
                             
                             <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 rounded-xl text-[11px] font-semibold flex items-center gap-1.5 shadow-sm transition-transform duration-200 group-hover:scale-105">
                                 ${CATEGORY_ICONS[item.category] || ''}
@@ -634,7 +650,7 @@
 
             imgEl.onerror = function() {
                 this.onerror = null;
-                this.src = 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80';
+                this.src = 'https://placehold.co/1200x800/E2DDCF/18181B?text=' + encodeURIComponent(item.title);
             };
             imgEl.src = item.imageUrl;
             imgEl.alt = item.title;

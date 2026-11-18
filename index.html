@@ -346,6 +346,7 @@
                 </button>
 
             </div>
+            <p id="gallery-status" aria-live="polite" class="text-xs text-zinc-500 font-medium pl-1">Showing all 12 photographs</p>
         </div>
 
         <!-- PHOTO GALLERY GRID -->
@@ -387,11 +388,11 @@
         </button>
 
         <!-- Lightbox Content Card Container with side margins ensuring space for outer arrows -->
-        <div id="lb-card-container" class="relative mx-12 sm:mx-16 md:mx-24 max-w-4xl lg:max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh] my-auto" onclick="event.stopPropagation()">
+        <div id="lb-card-container" class="relative mx-12 sm:mx-16 md:mx-24 max-w-5xl lg:max-w-6xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh] my-auto" onclick="event.stopPropagation()">
             
             <!-- Photo Presentation Frame -->
             <div class="relative flex-1 bg-charcoal-900 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[500px] p-4 sm:p-6 overflow-hidden">
-                <img id="lb-image" src="" alt="" draggable="false" class="max-h-[50vh] md:max-h-[78vh] w-auto max-w-full object-contain rounded-lg select-none">
+                <img id="lb-image" src="" alt="" draggable="false" class="max-h-[50vh] md:max-h-[82vh] w-auto max-w-full object-contain rounded-lg select-none">
             </div>
 
             <!-- Memory Story Details Panel -->
@@ -406,6 +407,8 @@
 
                     <p id="lb-description" class="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal pt-1 sm:pt-2"></p>
                 </div>
+
+                <div id="lb-counter" class="text-xs text-zinc-400 font-medium pt-6"></div>
             </div>
 
         </div>
@@ -413,7 +416,7 @@
 
     <!-- ================= JAVASCRIPT ================= -->
     <script>
-        // Category Icon System
+        // Category Vector Icons (Uniform 24x24 viewBox, 1.75px stroke)
         const CATEGORY_ICONS = {
             'Everyday': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-1"/><path d="M5 8h12v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"/><path d="M9 2c0 1 1 1.5 1 2.5s-1 1.5-1 2.5"/><path d="M13 2c0 1 1 1.5 1 2.5s-1 1.5-1 2.5"/></svg>`,
             'Japan': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M2 8h20M6 8v12M18 8v12M6 13h12"/></svg>`,
@@ -422,187 +425,178 @@
             'Special Moments': `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>`
         };
 
-        const ASPECT_RATIOS = ['aspect-[4/3]', 'aspect-[3/2]', 'aspect-[14/10]'];
-
         // Memory Archive Data
         const MEMORIES = [
             {
                 id: 'mem-1',
-                title: 'Kyoto Historic Walk',
-                date: 'April 2019',
+                title: 'teamLab Planets: The Infinite Crystal Universe',
+                date: 'September 2026',
                 category: 'Japan',
-                description: 'Walking through quiet historic streets and serene grounds during the early morning.',
+                description: 'Inside the mirror room at teamLab Planets. Thousands of hanging LED lights reflected off the mirrored walls and floor, changing colors around us as we walked through.',
                 imageUrl: 'images/6D085654-DF3E-4D52-927A-E987A9494F7D.JPG'
             },
             {
                 id: 'mem-2',
                 title: 'Birthday Celebration & Candles',
-                date: 'May 2005',
+                date: 'May 2025',
                 category: 'Birthday',
-                description: 'Gathered together around the table for the annual birthday celebration and making a wish before blowing out the candles.',
+                description: 'Everyone around the table for birthday cake, right before blowing out the candles.',
                 imageUrl: 'images/494BED44-056B-4EE6-B651-1D6655CEC766.JPG'
             },
             {
                 id: 'mem-3',
                 title: 'Sunday Morning Breakfast',
-                date: 'October 2012',
+                date: 'October 2024',
                 category: 'Everyday',
-                description: 'Fresh coffee brewing while mixing blueberry pancake batter in the yellow ceramic bowl on a sunny weekend morning.',
-                imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1200&q=80'
+                description: 'Slow Sunday morning at home with coffee, eggs, and toast.',
+                imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80'
             },
             {
                 id: 'mem-4',
-                title: 'Silver Wedding Anniversary Toast',
-                date: 'September 2018',
-                category: 'Special Moments',
-                description: 'Celebrating twenty-five years surrounded by family at an outdoor vineyard table during sunset.',
-                imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
-            },
-            {
-                id: 'mem-5',
-                title: 'Summer Lake House Cabin',
-                date: 'July 2014',
-                category: 'Family',
-                description: 'Two full weeks at the wooden lake cabin. Swimming off the dock during the afternoon and taking evening boat trips around the bay.',
-                imageUrl: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80'
-            },
-            {
-                id: 'mem-6',
-                title: 'Evening Lanterns & Architecture',
-                date: 'April 2019',
+                title: 'Lanterns & Evening Streets',
+                date: 'September 2026',
                 category: 'Japan',
-                description: 'Exploring the illuminated historic district after dark. Warm red lanterns lit up traditional wooden storefronts.',
+                description: 'Walking down the wooden streets at dusk just as the lanterns lit up.',
                 imageUrl: 'images/754EEA62-81C9-4868-8B02-D23D16EBCF50.JPG'
             },
             {
-                id: 'mem-7',
-                title: 'Birthday Party & Toast',
-                date: 'June 2012',
+                id: 'mem-5',
+                title: 'Afternoon Garden Gathering',
+                date: 'December 2024',
+                category: 'Family',
+                description: 'A sunny afternoon out in the garden with family, food, and plenty of laughs.',
+                imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1600&q=80'
+            },
+            {
+                id: 'mem-6',
+                title: 'Birthday Cake & Smiles',
+                date: 'May 2024',
                 category: 'Birthday',
-                description: 'Sharing laughter, toasts, and cake with loved ones during a memorable milestone birthday gathering.',
+                description: 'Cutting the birthday cake with everyone in the room.',
                 imageUrl: 'images/DSC_8253.JPG'
             },
             {
-                id: 'mem-8',
-                title: 'Rainy Afternoon Board Games',
-                date: 'November 2016',
-                category: 'Everyday',
-                description: 'A heavy autumn rain held everyone indoors, so we lit the fireplace and spent the afternoon playing classic tabletop games.',
-                imageUrl: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=1200&q=80'
-            },
-            {
-                id: 'mem-9',
-                title: 'Graduation Day on the Lawn',
-                date: 'June 2017',
-                category: 'Special Moments',
-                description: 'Gathered on the main quad following the commencement ceremony under clear blue summer skies.',
-                imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80'
-            },
-            {
-                id: 'mem-10',
-                title: 'Autumn Trail Hike',
-                date: 'October 2021',
-                category: 'Family',
-                description: 'Walking through golden maple and aspen trees along the mountain ridge trail during the peak of foliage season.',
-                imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80'
-            },
-            {
-                id: 'mem-11',
-                title: 'Garden Bridges & Blossoms',
-                date: 'April 2019',
+                id: 'mem-7',
+                title: 'Temple Grounds & Gardens',
+                date: 'September 2026',
                 category: 'Japan',
-                description: 'Strolling across wooden bridges in peaceful Japanese gardens surrounded by spring greenery.',
+                description: 'A quiet walk through the temple gardens in Japan.',
                 imageUrl: 'images/C90E24E9-2677-422E-A8B7-8F1641F22481.JPG'
             },
             {
-                id: 'mem-12',
-                title: 'Mount Fuji Twilight View',
-                date: 'April 2019',
+                id: 'mem-8',
+                title: 'Golden Hour by the Coast',
+                date: 'January 2025',
+                category: 'Special Moments',
+                description: 'Down by the water late in the afternoon as the sun started to go down.',
+                imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80'
+            },
+            {
+                id: 'mem-9',
+                title: 'Quiet Afternoon Reading',
+                date: 'August 2024',
+                category: 'Everyday',
+                description: 'Afternoon sun coming through the living room window with a book and a cup of tea.',
+                imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600&q=80'
+            },
+            {
+                id: 'mem-10',
+                title: 'City Lights & Skyline View',
+                date: 'September 2026',
                 category: 'Japan',
-                description: 'Watching the twilight colors fade over Mount Fuji from the countryside overlook.',
+                description: 'Looking out over the city lights at night after a full day of walking around.',
                 imageUrl: 'images/FA08CF9C-A8C3-4AEA-AD39-E974743840B8.JPG'
+            },
+            {
+                id: 'mem-11',
+                title: 'Evening Dinner Table',
+                date: 'November 2024',
+                category: 'Family',
+                description: 'Dinner at home with everyone catching up around the table.',
+                imageUrl: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1600&q=80'
+            },
+            {
+                id: 'mem-12',
+                title: 'First Snowfall Morning',
+                date: 'February 2025',
+                category: 'Special Moments',
+                description: 'Waking up to fresh snow covering the trees outside.',
+                imageUrl: 'https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?auto=format&fit=crop&w=1600&q=80'
             }
         ];
 
+        // Application State
         let currentCategory = 'All';
         let filteredMemories = [...MEMORIES];
-        let currentLightboxIndex = -1;
-        let activeTriggerElement = null;
-
-        // Mobile touch swipe tracking
+        let currentLightboxIndex = 0;
+        let lastFocusedElement = null;
         let touchStartX = 0;
         let touchEndX = 0;
 
-        // Image URL optimization helpers
+        // Restrained Editorial Aspect Ratios for Visual Rhythm
+        const CARD_ASPECTS = [
+            'aspect-[4/3]',
+            'aspect-[3/2]',
+            'aspect-[14/10]'
+        ];
+
+        // Escape HTML utility
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Optimize Unsplash URLs for fast grid thumbnails while keeping local paths intact
         function getThumbnailUrl(url) {
-            if (url.includes('images.unsplash.com')) {
+            if (url && url.includes('images.unsplash.com')) {
                 return url.replace(/w=\d+/, 'w=640').replace(/q=\d+/, 'q=75');
             }
             return url;
         }
 
-        function getFullResUrl(url) {
-            if (url.includes('images.unsplash.com')) {
-                return url.replace(/w=\d+/, 'w=1600').replace(/q=\d+/, 'q=85');
-            }
-            return url;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGallery();
-
-            // Keyboard navigation & shortcuts
-            document.addEventListener('keydown', (e) => {
-                const lb = document.getElementById('lightbox');
-                if (!lb.classList.contains('hidden')) {
-                    if (e.key === 'Escape') closeLightbox();
-                    if (e.key === 'ArrowLeft') navigateLightbox(-1);
-                    if (e.key === 'ArrowRight') navigateLightbox(1);
-                }
-            });
-
-            // Close modal on backdrop click
-            const lbModal = document.getElementById('lightbox');
-            lbModal.addEventListener('click', (e) => {
-                if (e.target === lbModal) closeLightbox();
-            });
-
-            // Touch swipe handlers
-            lbModal.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-
-            lbModal.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-        });
-
-        function handleSwipe() {
-            const threshold = 40;
-            if (touchEndX < touchStartX - threshold) {
-                navigateLightbox(1);  // Swipe left -> next
-            } else if (touchEndX > touchStartX + threshold) {
-                navigateLightbox(-1); // Swipe right -> prev
+        // Graceful fallback if a local or external image is unavailable
+        function handleImageError(img) {
+            img.onerror = null;
+            img.src = 'https://placehold.co/800x600/EFEBE1/71717A?text=Story+Book+Photo';
+            img.classList.add('loaded');
+            if (img.parentElement) {
+                img.parentElement.classList.remove('img-skeleton');
             }
         }
 
-        function filterCategory(cat) {
-            currentCategory = cat;
+        // Handle image load completion
+        function handleImageLoad(img) {
+            img.classList.add('loaded');
+            if (img.parentElement) {
+                img.parentElement.classList.remove('img-skeleton');
+            }
+        }
 
-            document.querySelectorAll('.cat-pill').forEach(btn => {
-                const btnCat = btn.getAttribute('data-cat');
-                const svg = btn.querySelector('svg');
-                if (btnCat === cat) {
-                    btn.setAttribute('aria-selected', 'true');
-                    btn.className = "cat-pill active px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center gap-2 bg-charcoal-900 text-white shadow-sm shrink-0";
+        // Filter Gallery by Category
+        function filterCategory(category) {
+            if (currentCategory === category) return;
+            currentCategory = category;
+
+            // Update pill button active states
+            const pills = document.querySelectorAll('#category-bar .cat-pill');
+            pills.forEach(pill => {
+                const isSelected = pill.getAttribute('data-cat') === category;
+                const svg = pill.querySelector('svg');
+
+                pill.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+
+                if (isSelected) {
+                    pill.classList.add('active', 'bg-charcoal-900', 'text-white', 'font-semibold', 'shadow-sm');
+                    pill.classList.remove('bg-white', 'text-zinc-700', 'hover:bg-zinc-100', 'font-medium');
                     if (svg) {
-                        svg.classList.remove('text-zinc-500');
                         svg.classList.add('text-white');
+                        svg.classList.remove('text-zinc-500');
                     }
                 } else {
-                    btn.setAttribute('aria-selected', 'false');
-                    btn.className = "cat-pill px-4 py-2.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white text-zinc-700 hover:bg-zinc-100 shrink-0";
+                    pill.classList.remove('active', 'bg-charcoal-900', 'text-white', 'font-semibold', 'shadow-sm');
+                    pill.classList.add('bg-white', 'text-zinc-700', 'hover:bg-zinc-100', 'font-medium');
                     if (svg) {
                         svg.classList.remove('text-white');
                         svg.classList.add('text-zinc-500');
@@ -613,158 +607,237 @@
             renderGallery();
         }
 
+        // Render Gallery Cards
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
+            const statusEl = document.getElementById('gallery-status');
 
             filteredMemories = MEMORIES.filter(item => {
                 return (currentCategory === 'All') || (item.category === currentCategory);
             });
 
+            if (statusEl) {
+                const count = filteredMemories.length;
+                const noun = count === 1 ? 'photograph' : 'photographs';
+                statusEl.textContent = currentCategory === 'All'
+                    ? `Showing all ${count} ${noun}`
+                    : `Showing ${count} ${noun} in ${currentCategory}`;
+            }
+
             if (filteredMemories.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full py-16 text-center space-y-3">
-                        <div class="w-12 h-12 rounded-2xl bg-white mx-auto flex items-center justify-center text-zinc-400 shadow-sm">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        </div>
-                        <p class="text-sm font-medium text-charcoal-700">No photographs found in this category.</p>
+                    <div class="col-span-full py-16 px-6 text-center bg-white rounded-3xl shadow-sm">
+                        <p class="font-serif text-2xl text-charcoal-900 mb-2">No photographs in this category yet</p>
+                        <p class="text-sm text-zinc-500">Select another category above to explore more memories.</p>
                     </div>
                 `;
                 return;
             }
 
             grid.innerHTML = filteredMemories.map((item, idx) => {
-                const aspectClass = ASPECT_RATIOS[idx % ASPECT_RATIOS.length];
-                const staggerDelay = (idx * 40) + 'ms';
-                const isInitialFold = idx < 3;
-                const loadingAttr = isInitialFold ? 'eager' : 'lazy';
-                const priorityAttr = isInitialFold ? 'fetchpriority="high"' : 'fetchpriority="low"';
-                const thumbUrl = getThumbnailUrl(item.imageUrl);
+                const aspectClass = CARD_ASPECTS[idx % CARD_ASPECTS.length];
+                const delayMs = Math.min(idx * 45, 360);
+                const priorityAttr = idx < 3 ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"';
+                const thumbSrc = getThumbnailUrl(item.imageUrl);
+                const iconSvg = CATEGORY_ICONS[item.category] || '';
 
                 return `
-                <article class="story-card rounded-3xl overflow-hidden cursor-pointer group animate-stagger-card flex flex-col justify-between no-select" 
-                         style="animation-delay: ${staggerDelay};"
-                         onclick="openLightbox(${idx}, this)" 
-                         tabindex="0"
-                         onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openLightbox(${idx}, this); }">
-                    
-                    <div>
-                        <div class="relative ${aspectClass} w-full overflow-hidden bg-linen-200 img-skeleton" id="card-img-wrap-${idx}">
-                            <img src="${thumbUrl}" alt="${escapeHtml(item.title)}" 
-                                 draggable="false"
-                                 class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] img-fade-in select-none"
-                                 loading="${loadingAttr}"
-                                 ${priorityAttr}
-                                 decoding="async"
-                                 onload="this.classList.add('loaded'); document.getElementById('card-img-wrap-${idx}')?.classList.remove('img-skeleton')"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/E2DDCF/18181B?text=' + encodeURIComponent('${escapeHtml(item.title)}'); this.classList.add('loaded'); document.getElementById('card-img-wrap-${idx}')?.classList.remove('img-skeleton')">
+                    <article 
+                        tabindex="0"
+                        role="button"
+                        aria-label="Open memory: ${escapeHtml(item.title)}"
+                        onclick="openLightbox(${idx}, this)"
+                        onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openLightbox(${idx}, this); }"
+                        style="animation-delay: ${delayMs}ms;"
+                        class="story-card animate-stagger-card rounded-3xl overflow-hidden shadow-sm cursor-pointer flex flex-col group no-select">
+                        
+                        <!-- Photograph Container -->
+                        <div class="relative ${aspectClass} w-full overflow-hidden img-skeleton">
+                            <img 
+                                src="${escapeHtml(thumbSrc)}" 
+                                alt="${escapeHtml(item.title)}"
+                                ${priorityAttr}
+                                decoding="async"
+                                draggable="false"
+                                onload="handleImageLoad(this)"
+                                onerror="handleImageError(this)"
+                                class="w-full h-full object-cover object-center img-fade-in transition-transform duration-500 ease-out group-hover:scale-[1.03] select-none">
                             
-                            <div class="absolute top-3.5 right-3.5 px-3 py-1 bg-white/90 backdrop-blur-md text-charcoal-900 rounded-xl text-[11px] font-semibold flex items-center gap-1.5 shadow-sm transition-transform duration-200 group-hover:scale-105 no-select">
-                                ${CATEGORY_ICONS[item.category] || ''}
+                            <!-- Floating Category Pill -->
+                            <div class="absolute top-3.5 right-3.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-sm text-charcoal-800 text-xs font-medium flex items-center gap-1.5 shadow-sm">
+                                ${iconSvg}
                                 <span>${escapeHtml(item.category)}</span>
                             </div>
                         </div>
 
-                        <div class="p-6 space-y-3">
-                            <div class="text-xs font-semibold text-terracotta-600 no-select">
-                                <span>${escapeHtml(item.date)}</span>
+                        <!-- Card Text Content -->
+                        <div class="p-6 flex flex-col flex-grow justify-between space-y-3">
+                            <div class="space-y-1.5">
+                                <p class="text-xs font-semibold text-terracotta-600 tracking-wide">
+                                    ${escapeHtml(item.date)}
+                                </p>
+                                <h2 class="font-serif text-2xl font-semibold text-charcoal-900 leading-snug group-hover:text-terracotta-700 transition-colors">
+                                    ${escapeHtml(item.title)}
+                                </h2>
                             </div>
-
-                            <h3 class="font-serif text-2xl font-semibold text-charcoal-900 group-hover:text-terracotta-600 transition-colors leading-snug">
-                                ${escapeHtml(item.title)}
-                            </h3>
-
-                            <p class="text-xs text-charcoal-700 leading-relaxed line-clamp-3 font-normal">
+                            <p class="text-sm text-charcoal-700 leading-relaxed line-clamp-3">
                                 ${escapeHtml(item.description)}
                             </p>
                         </div>
-                    </div>
-
-                </article>
-            `}).join('');
+                    </article>
+                `;
+            }).join('');
         }
 
-        function openLightbox(idx, triggerEl = null, dir = 0) {
-            currentLightboxIndex = idx;
-            if (triggerEl) activeTriggerElement = triggerEl;
+        // Preload adjacent high-resolution photos for seamless lightbox navigation
+        function preloadNeighborImages(idx) {
+            if (filteredMemories.length <= 1) return;
+            const prevIdx = (idx - 1 + filteredMemories.length) % filteredMemories.length;
+            const nextIdx = (idx + 1) % filteredMemories.length;
 
+            [prevIdx, nextIdx].forEach(i => {
+                const preloadImg = new Image();
+                preloadImg.src = filteredMemories[i].imageUrl;
+            });
+        }
+
+        // Open Fullscreen Lightbox Viewer
+        function openLightbox(idx, triggerEl) {
+            if (!filteredMemories[idx]) return;
+            lastFocusedElement = triggerEl || document.activeElement;
+            currentLightboxIndex = idx;
+
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            renderLightboxContent(idx, 'none');
+
+            const closeBtn = document.getElementById('lb-close-btn');
+            if (closeBtn) {
+                setTimeout(() => closeBtn.focus(), 20);
+            }
+        }
+
+        // Populate Lightbox Photo & Details
+        function renderLightboxContent(idx, direction) {
             const item = filteredMemories[idx];
             if (!item) return;
 
             const imgEl = document.getElementById('lb-image');
             const panelEl = document.getElementById('lb-details-panel');
 
-            // Apply direction-aware horizontal slide animations
-            imgEl.classList.remove('lb-fade-swap', 'lb-slide-right', 'lb-slide-left');
-            panelEl.classList.remove('lb-fade-swap', 'lb-slide-right', 'lb-slide-left');
-            
-            void imgEl.offsetWidth; // Force CSS animation reflow
+            // Reset transition classes cleanly
+            imgEl.classList.remove('lb-slide-right', 'lb-slide-left', 'lb-fade-swap');
+            panelEl.classList.remove('lb-fade-swap');
+            void imgEl.offsetWidth;
 
-            if (dir > 0) {
+            if (direction === 'next') {
                 imgEl.classList.add('lb-slide-right');
-                panelEl.classList.add('lb-slide-right');
-            } else if (dir < 0) {
+                panelEl.classList.add('lb-fade-swap');
+            } else if (direction === 'prev') {
                 imgEl.classList.add('lb-slide-left');
-                panelEl.classList.add('lb-slide-left');
+                panelEl.classList.add('lb-fade-swap');
             } else {
                 imgEl.classList.add('lb-fade-swap');
-                panelEl.classList.add('lb-fade-swap');
             }
 
             imgEl.onerror = function() {
                 this.onerror = null;
-                this.src = 'https://placehold.co/1200x800/E2DDCF/18181B?text=' + encodeURIComponent(item.title);
+                this.src = 'https://placehold.co/1200x900/27272A/E4E4E7?text=Story+Book+Photo';
             };
-            imgEl.src = getFullResUrl(item.imageUrl);
+            imgEl.src = item.imageUrl;
             imgEl.alt = item.title;
-            
+
             document.getElementById('lb-date').textContent = item.date;
             document.getElementById('lb-category-pill').innerHTML = `${CATEGORY_ICONS[item.category] || ''} ${escapeHtml(item.category)}`;
             document.getElementById('lb-title').textContent = item.title;
             document.getElementById('lb-description').textContent = item.description;
+            document.getElementById('lb-counter').textContent = `${idx + 1} / ${filteredMemories.length}`;
 
             preloadNeighborImages(idx);
-
-            const lbModal = document.getElementById('lightbox');
-            lbModal.classList.remove('hidden');
-            
-            document.body.style.overflow = 'hidden';
         }
 
+        // Navigate Next or Previous Photo in Lightbox
+        function navigateLightbox(step) {
+            if (filteredMemories.length <= 1) return;
+            currentLightboxIndex = (currentLightboxIndex + step + filteredMemories.length) % filteredMemories.length;
+            const direction = step > 0 ? 'next' : 'prev';
+            renderLightboxContent(currentLightboxIndex, direction);
+        }
+
+        // Close Lightbox Viewer
         function closeLightbox() {
-            const lbModal = document.getElementById('lightbox');
-            lbModal.classList.add('hidden');
-            
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('hidden')) return;
+
+            lightbox.classList.add('hidden');
             document.body.style.overflow = '';
 
-            if (activeTriggerElement) {
-                activeTriggerElement.focus();
-                activeTriggerElement = null;
+            if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+                lastFocusedElement.focus();
             }
         }
 
-        function navigateLightbox(dir) {
-            if (filteredMemories.length === 0) return;
-            currentLightboxIndex += dir;
-            if (currentLightboxIndex < 0) currentLightboxIndex = filteredMemories.length - 1;
-            if (currentLightboxIndex >= filteredMemories.length) currentLightboxIndex = 0;
-            openLightbox(currentLightboxIndex, null, dir);
-        }
+        // Backdrop Click Handler
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
 
-        function preloadNeighborImages(idx) {
-            if (filteredMemories.length <= 1) return;
-            const prevIdx = (idx - 1 + filteredMemories.length) % filteredMemories.length;
-            const nextIdx = (idx + 1) % filteredMemories.length;
-            
-            const imgPrev = new Image();
-            imgPrev.src = getFullResUrl(filteredMemories[prevIdx].imageUrl);
-            
-            const imgNext = new Image();
-            imgNext.src = getFullResUrl(filteredMemories[nextIdx].imageUrl);
-        }
+        // Keyboard Navigation & Focus Trap
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('hidden')) return;
 
-        function escapeHtml(str) {
-            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigateLightbox(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigateLightbox(-1);
+            } else if (e.key === 'Tab') {
+                const focusable = lightbox.querySelectorAll('button:not([disabled])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+
+        // Mobile Touch Swipe Support inside Lightbox
+        const lbContainer = document.getElementById('lb-card-container');
+        lbContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lbContainer.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            const deltaX = touchEndX - touchStartX;
+            if (Math.abs(deltaX) > 45) {
+                if (deltaX < 0) {
+                    navigateLightbox(1);
+                } else {
+                    navigateLightbox(-1);
+                }
+            }
+        }, { passive: true });
+
+        // Initialize Gallery on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+        });
     </script>
 </body>
 </html>
